@@ -36,6 +36,7 @@ class $modify(MenuLayer) {
 
 		socials->addChild(menuItem);
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
+		bool revertAccountPosition = Mod::get()->getSettingValue<bool>("revertProfileButton");
 		auto robtoplogo = socials->getChildByID("robtop-logo-button");
 		if (robtoplogo) {
 			robtoplogo->setPosition(-198,31);
@@ -50,17 +51,17 @@ class $modify(MenuLayer) {
 
 		auto accbtn = account->getChildByID("profile-button");
 
-		if(account && accbtn && hideMoreGames == true){
+		if(account && accbtn && hideMoreGames && !revertAccountPosition){
 			accbtn->setPosition(27.5,29);
 			accbtn->setContentSize(CCSize(55,58));
 		}
 
-		if(account && hideMoreGames == true){
+		if(account && hideMoreGames && !revertAccountPosition){
 			account->setPosition(587,30);
 		}
 
 		auto username = this->getChildByID("player-username");
-		if(username && hideMoreGames == true){
+		if(username && hideMoreGames && !revertAccountPosition){
 			username->setPosition(479,12);
 		}
 		//settings
