@@ -66,7 +66,7 @@ class $modify(MenuLayer) {
 		}
 		//settings
 		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
-		auto logo = this->getChildByID("robtop-logo-button");
+		auto logo = socials->getChildByID("robtop-logo-button");
 		if(logo){
 			logo->setVisible(!robtopLogoHide);
 		}
