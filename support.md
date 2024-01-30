@@ -1,0 +1,1 @@
+Want to support the development of this mod? Go and star [the repository!](https://github.com/29cmb/CleanMenu)

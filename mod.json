@@ -1,7 +1,7 @@
 {
 	"geode": "2.0.0",
 	"gd": "2.204",
-	"version": "v1.0.0",
+	"version": "v1.1.3",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
@@ -11,7 +11,7 @@
 			"name": "Hide RobTop Logo",
 			"description": "Hide the robtop logo on the main menu",
 			"type": "bool",
-			"default": false
+			"default": true
 		},
 		"hideSocials": {
 			"name": "Hide Social Icons",
@@ -30,11 +30,26 @@
 			"description": "Revert the position of the profile button back to the original position",
 			"type": "bool",
 			"default": false
+		},
+		"whichSideProfileButton": {
+			"name": "Profile Button Side",
+			"description": "Determins which side of the screen the profile button will be on | The more games button and robtop button settings must be changes appropriately.",
+			"type": "float",
+			"default": 1,
+			"min": 0,
+			"max": 1,
+			"control": {
+				"slider": true,
+				"arrows": false,
+				"input": false,
+				"slider-step": 1.0
+			}
 		}
 	},
 	"resources": {
 		"sprites": [
 			"resources/*.png"
 		]
-	}
+	},
+	"repository": "https://github.com/29cmb/CleanMenu"
 }
