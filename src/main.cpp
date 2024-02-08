@@ -49,11 +49,6 @@ class $modify(LinkHandlerModification, MenuLayer) {
 			robtoplogo->setPosition(-198,31);
 		}
 
-		auto bottomMenu = this->getChildByID("bottom-menu");
-		if (bottomMenu) {
-			bottomMenu->setPositionY(58);
-		}
-
 		auto account = this->getChildByID("profile-menu");
 		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
 		auto accbtn = account->getChildByID("profile-button");
@@ -89,6 +84,11 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto sm2 = this->getChildByID("social-media-menu");
 		if(sm2){
 			sm2->setVisible(!socialsHide);
+		} else {
+			auto bottomMenu = this->getChildByID("bottom-menu");
+			if (bottomMenu) {
+				bottomMenu->setPositionY(58);
+			}
 		}
 
 		
