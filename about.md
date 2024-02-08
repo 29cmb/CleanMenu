@@ -14,26 +14,17 @@ Tweaks the geometry dash menus for better arrangement.
 ## Creator Layer
 
 - Removes the grayed out buttons
-
 - Moves around the buttons based on usability
 
-# Settings
+## Search Box
+Replaces the small buttons with larger ones
 
-"hideRobtopLogo" - Hides the robtop logo on the main menu
 
-"hideSocials" - Hides the social buttons at the bottom of the main menu
-
-"hideMoreGames" - Hides the more games button on the main menu
-
-"revertProfileButton" - Puts the account button back where it was
-
-"whichSideProfileButton" - Determines which side the profile button is on
-
-"revertCreatorPageChanges" - Reverts the creator layer back to its old styling
+## Profile
+Moves around the buttons for easier ease of access
 
 # Credits
 DevCmbGD - Programming + Final Logo
-
 NibblesGD - First revisions of the logo
-
 UCrash - UX Redesign of the GD menus (base for all changes)
+Cvolton + fleeym - Assistance in the discord server.
