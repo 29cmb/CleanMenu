@@ -23,7 +23,7 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto youtube = socials->getChildByID("youtube-button");
 		youtube->setPosition(31.5,32);
 		auto twitch = socials->getChildByID("twitch-button");
-		twitch->setPosition(47.3, 32);
+		twitch->setPosition(57.3, 32);
 		auto discord = socials->getChildByID("discord-button");
 		discord->setPosition(83, 32);
 		
@@ -84,10 +84,11 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto sm2 = this->getChildByID("social-media-menu");
 		if(sm2){
 			sm2->setVisible(!socialsHide);
-		} else {
-			auto bottomMenu = this->getChildByID("bottom-menu");
-			if (bottomMenu) {
-				bottomMenu->setPositionY(58);
+			if(socialsHide == false){
+				auto bottomMenu = this->getChildByID("bottom-menu");
+				if (bottomMenu) {
+					bottomMenu->setPositionY(58);
+				}
 			}
 		}
 
