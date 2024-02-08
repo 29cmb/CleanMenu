@@ -51,3 +51,11 @@
 
 # clangd
 .cache/
+
+# cmake
+
+CPM_modules/
+_deps
+cmake
+CMakeFiles
+geode

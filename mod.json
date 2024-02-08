@@ -1,11 +1,11 @@
 {
 	"geode": "2.0.0",
 	"gd": "2.204",
-	"version": "v1.2.0",
+	"version": "v2.0.0",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
-	"description": "Improves the GD main menu.",
+	"description": "Improves the GD menus.",
 	"settings": {
 		"hideRobtopLogo": {
 			"name": "Hide RobTop Logo",
@@ -33,7 +33,7 @@
 		},
 		"whichSideProfileButton": {
 			"name": "Profile Button Side",
-			"description": "Determins which side of the screen the profile button will be on | The more games button and robtop button settings must be changes appropriately.",
+			"description": "Determines which side of the screen the profile button will be on | The more games button and robtop button settings must be changed appropriately.",
 			"type": "float",
 			"default": 1,
 			"min": 0,
@@ -44,6 +44,12 @@
 				"input": false,
 				"slider-step": 1.0
 			}
+		},
+		"revertCreatorPageChanges": {
+			"name": "Revert creator page changes",
+			"description": "Revert the changes made to the creator page",
+			"type": "bool",
+			"default": false
 		}
 	},
 	"resources": {
