@@ -50,6 +50,24 @@
 			"description": "Revert the changes made to the creator page",
 			"type": "bool",
 			"default": false
+		},
+		"revertSearchPageChanges":{
+			"name": "Revert Search Page Changes",
+			"description": "Revert changes made to the search menu",
+			"type": "bool",
+			"default": false
+		},
+		"revertIconKitChanges": {
+			"name": "Revert Icon Kit Changes",
+			"description": "Revert changes made to the icon kit menu",
+			"type": "bool",
+			"default": false
+		},
+		"revertProfileChanges": {
+			"name": "Revert profile changes",
+			"description": "Revert changes made to the profile page",
+			"type": "bool",
+			"default": false
 		}
 	},
 	"resources": {
