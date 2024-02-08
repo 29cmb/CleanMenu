@@ -100,7 +100,6 @@ class $modify(LinkHandlerModification, MenuLayer) {
 
 };
 
-
 class $modify(CreatorLayer){
 	bool init(){
 		if(!CreatorLayer::init()) return false;
@@ -180,66 +179,69 @@ class $modify(LevelSearchLayer){
 	bool init(int p1){
 		if(!LevelSearchLayer::init(p1)) return false;
 
-		auto filtersTitle = this->getChildByID("filters-title");
-		auto quickSearchTitle = this->getChildByID("quick-search-title");
+		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
 
-		if(filtersTitle) filtersTitle->setVisible(false);
-		
-		if(quickSearchTitle) quickSearchTitle->setVisible(false);
-		
+		if(!dontdochanges){
+			auto filtersTitle = this->getChildByID("filters-title");
+			auto quickSearchTitle = this->getChildByID("quick-search-title");
 
-		auto quickSearch = this->getChildByID("quick-search-menu");
-		auto quickSearchBg = this->getChildByID("quick-search-bg");
+			if(filtersTitle) filtersTitle->setVisible(false);
+			
+			if(quickSearchTitle) quickSearchTitle->setVisible(false);
+			
 
-		quickSearch->setPositionY(145);
-		quickSearchBg->setPositionY(173);
+			auto quickSearch = this->getChildByID("quick-search-menu");
+			auto quickSearchBg = this->getChildByID("quick-search-bg");
 
-		auto levelSearchBg = this->getChildByID("level-search-bg");
-		levelSearchBg->setContentSize(CCSize(365, 72));
-		levelSearchBg->setPositionY(274);
+			quickSearch->setPositionY(145);
+			quickSearchBg->setPositionY(173);
 
-		auto searchMenu = this->getChildByID("search-button-menu");
-		auto searchButton = searchMenu->getChildByID("search-level-button");
-		auto userSearchButton = searchMenu->getChildByID("search-user-button");
+			auto levelSearchBg = this->getChildByID("level-search-bg");
+			levelSearchBg->setContentSize(CCSize(365, 72));
+			levelSearchBg->setPositionY(274);
 
-		if(searchButton) searchButton->setVisible(false);
-		
-		if(userSearchButton) userSearchButton->setVisible(false);
-		
+			auto searchMenu = this->getChildByID("search-button-menu");
+			auto searchButton = searchMenu->getChildByID("search-level-button");
+			auto userSearchButton = searchMenu->getChildByID("search-user-button");
 
-		auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
-		auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
-		auto label1 = CCLabelBMFont::create("Search Levels", "bigFont.fnt");
+			if(searchButton) searchButton->setVisible(false);
+			
+			if(userSearchButton) userSearchButton->setVisible(false);
+			
 
-		label1->setScale(0.4);
-		label1->setPosition(78, 14);
-		sButton->addChild(label1);
+			auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
+			auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
+			auto label1 = CCLabelBMFont::create("Search Levels", "bigFont.fnt");
 
-		sButton->setPosition(-91, 96);
-		sButton->setID("cleanerMenu-search-level-button");
-		largeSearchButtonCreate->setScale(1.2);
+			label1->setScale(0.4);
+			label1->setPosition(78, 14);
+			sButton->addChild(label1);
 
-		searchMenu->addChild(sButton);
+			sButton->setPosition(-91, 96);
+			sButton->setID("cleanerMenu-search-level-button");
+			largeSearchButtonCreate->setScale(1.2);
 
-		auto largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
-		auto sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
-		auto label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
+			searchMenu->addChild(sButton);
 
-		label2->setScale(0.4);
-		label2->setPosition(83, 14);
+			auto largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
+			auto sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
+			auto label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
 
-		sButton2->addChild(label2);
+			label2->setScale(0.4);
+			label2->setPosition(83, 14);
 
-		sButton2->setID("cleanerMenu-search-user-button");
-		sButton2->setPosition(88, 96);
-		largeSearchUserButtonCreate->setScale(1.2);
-		
-		searchMenu->addChild(sButton2);
+			sButton2->addChild(label2);
 
-		auto barbg = this->getChildByID("level-search-bar-bg");
-		barbg->setPosition(262.5, 290);
-		barbg->setScale(1.475, 1);
+			sButton2->setID("cleanerMenu-search-user-button");
+			sButton2->setPosition(88, 96);
+			largeSearchUserButtonCreate->setScale(1.2);
+			
+			searchMenu->addChild(sButton2);
 
+			auto barbg = this->getChildByID("level-search-bar-bg");
+			barbg->setPosition(262.5, 290);
+			barbg->setScale(1.475, 1);
+		}
 		return true;
 	}	
 };
@@ -249,8 +251,9 @@ class $modify(ProfilePage){
 
 		ProfilePage::loadPageFromUserInfo(a2);
 
+		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
 		auto mainLayer = dynamic_cast<CCLayer*>(this->getChildren()->objectAtIndex(0));
-		if(mainLayer){
+		if(mainLayer && !dontdochanges){
 			auto mainProfileMenu = mainLayer->getChildByID("main-menu");
 
 			auto commentButton = mainProfileMenu->getChildByID("comment-button");
@@ -364,74 +367,78 @@ class $modify(GJGarageLayer){
 	bool init(){
 		if(!GJGarageLayer::init()) return false;
 
-		// omg we're finally back to 'this' calls
-		auto shardsMenu = this->getChildByID("shards-menu");
-		auto colorButton = shardsMenu->getChildByID("color-button");
+		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
 
-		auto topLeftMenu = this->getChildByID("top-left-menu");
-		auto shopButton = topLeftMenu->getChildByID("shop-button");
-		
-		if(shopButton) shopButton->setPositionX(493);
-		if(colorButton) colorButton->setPosition(473.25, -12.5);
+		if(!dontdochanges){
 
-		//oh no, this is where the pain begins....
+			// omg we're finally back to 'this' calls
+			auto shardsMenu = this->getChildByID("shards-menu");
+			auto colorButton = shardsMenu->getChildByID("color-button");
 
-		auto starsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("stars-icon"));
-		auto starsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("stars-label"));
+			auto topLeftMenu = this->getChildByID("top-left-menu");
+			auto shopButton = topLeftMenu->getChildByID("shop-button");
+			
+			if(shopButton) shopButton->setPositionX(493);
+			if(colorButton) colorButton->setPosition(473.25, -12.5);
 
-		auto moonsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("moons-icon"));
-		auto moonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("moons-label"));
+			//oh no, this is where the pain begins....
 
-		auto coinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("coins-icon"));
-		auto coinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("coins-label"));
+			auto starsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("stars-icon"));
+			auto starsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("stars-label"));
 
-		auto userCoinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("user-coins-icon"));
-		auto userCoinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("user-coins-label"));
+			auto moonsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("moons-icon"));
+			auto moonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("moons-label"));
 
-		auto orbsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("orbs-icon"));
-		auto orbsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("orbs-label"));
+			auto coinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("coins-icon"));
+			auto coinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("coins-label"));
 
-		auto diamondsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("diamonds-icon"));
-		auto diamondsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamonds-label"));
+			auto userCoinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("user-coins-icon"));
+			auto userCoinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("user-coins-label"));
 
-		auto diamondShardsIcon = dynamic_cast<CCSprite*>(this->getChildByID("diamond-shards-icon"));
-		auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamond-shards-label"));
+			auto orbsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("orbs-icon"));
+			auto orbsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("orbs-label"));
 
-		if(starsIcon) starsIcon->setPositionX(83);
-		if(starsLabel) starsLabel->setPositionX(126);
+			auto diamondsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("diamonds-icon"));
+			auto diamondsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamonds-label"));
 
-		if(moonsIcon) moonsIcon->setPositionX(83);
-		if(moonsLabel) moonsLabel->setPositionX(126);
+			auto diamondShardsIcon = dynamic_cast<CCSprite*>(this->getChildByID("diamond-shards-icon"));
+			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamond-shards-label"));
 
-		if(coinsIcon) coinsIcon->setPositionX(83);
-		if(coinsLabel) coinsLabel->setPositionX(126);
+			if(starsIcon) starsIcon->setPositionX(83);
+			if(starsLabel) starsLabel->setPositionX(126);
 
-		if(userCoinsIcon) userCoinsIcon->setPositionX(83);
-		if(userCoinsLabel) userCoinsLabel->setPositionX(126);
+			if(moonsIcon) moonsIcon->setPositionX(83);
+			if(moonsLabel) moonsLabel->setPositionX(126);
 
-		if(orbsIcon) orbsIcon->setPositionX(83);
-		if(orbsLabel) orbsLabel->setPositionX(126);
+			if(coinsIcon) coinsIcon->setPositionX(83);
+			if(coinsLabel) coinsLabel->setPositionX(126);
 
-		// second row
+			if(userCoinsIcon) userCoinsIcon->setPositionX(83);
+			if(userCoinsLabel) userCoinsLabel->setPositionX(126);
 
-		if(diamondsIcon) {
-			diamondsIcon->setPositionX(148);
-			diamondsIcon->setPositionY(307);
-		};
-		if(diamondsLabel) {
-			diamondsLabel->setPositionX(184);
-			diamondsLabel->setPositionY(306.5);
+			if(orbsIcon) orbsIcon->setPositionX(83);
+			if(orbsLabel) orbsLabel->setPositionX(126);
+
+			// second row
+
+			if(diamondsIcon) {
+				diamondsIcon->setPositionX(148);
+				diamondsIcon->setPositionY(307);
+			};
+			if(diamondsLabel) {
+				diamondsLabel->setPositionX(184);
+				diamondsLabel->setPositionY(306.5);
+			}
+
+			if(diamondShardsIcon) {
+				diamondShardsIcon->setPositionX(149);
+				diamondShardsIcon->setPositionY(292);
+			}
+			if(diamondShardsLabel) {
+				diamondShardsLabel->setPositionX(180);
+				diamondShardsLabel->setPositionY(291.5);
+			}
 		}
-
-		if(diamondShardsIcon) {
-			diamondShardsIcon->setPositionX(149);
-			diamondShardsIcon->setPositionY(292);
-		}
-		if(diamondShardsLabel) {
-			diamondShardsLabel->setPositionX(180);
-			diamondShardsLabel->setPositionY(291.5);
-		}
-
 		return true;
 	}
 };
