@@ -16,24 +16,30 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		if (socials) {
 			socials->setPosition(242, -15);
 		}
-
+		auto facebook = socials->getChildByID("facebook-button");
+		facebook->setPosition(-21.4, 32);
+		auto twitter = socials->getChildByID("twitter-button");
+		twitter->setPosition(5.6, 32);
+		auto youtube = socials->getChildByID("youtube-button");
+		youtube->setPosition(31.5,32);
+		auto twitch = socials->getChildByID("twitch-button");
+		twitch->setPosition(47.3, 32);
 		auto discord = socials->getChildByID("discord-button");
-		if (discord) {
-			discord->setPosition(88, 30);
-		}
+		discord->setPosition(83, 32);
+		
 
 		//reddit button!!!!!
 
 		auto redditSprite = CCSprite::create("reddit-button.png"_spr);
 		auto menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandlerModification::redditOpen));
 	
-		menuItem->setPosition(115,33);
+		menuItem->setPosition(109,34);
 		menuItem->setRotation(-90);
-		menuItem->setContentSize(CCSize(31.5,31.5));
+		menuItem->setContentSize(CCSize(25.5,25.5));
 		menuItem->setID("reddit-button");
 		menuItem->setNormalImage(redditSprite);
 
-		redditSprite->setScale(1);
+		redditSprite->setScale(0.9);
 
 		socials->addChild(menuItem);
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
@@ -99,6 +105,7 @@ class $modify(LinkHandlerModification, MenuLayer) {
     }
 
 };
+
 
 class $modify(CreatorLayer){
 	bool init(){
