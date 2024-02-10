@@ -1,9 +1,6 @@
 {
 	"geode": "2.0.0",
-	"gd": {
-		"win": "2.204",
-		"android": "2.205"
-	},
+	"gd": "*",
 	"version": "v2.0.1",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
@@ -78,5 +75,9 @@
 			"resources/*.png"
 		]
 	},
-	"repository": "https://github.com/29cmb/CleanMenu"
+	"repository": "https://github.com/29cmb/CleanMenu",
+	"issues": {
+		"info": "Report issues to the github repository",
+		"url": "https://github.com/29cmb/CleanMenu/issues"
+	}
 }
