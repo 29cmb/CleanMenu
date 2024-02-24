@@ -34,7 +34,7 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto redditSprite = CCSprite::create("reddit-button.png"_spr);
 		auto menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandlerModification::redditOpen));
 	
-		menuItem->setPosition(109,34.5);
+		menuItem->setPosition(109,32.5);
 		menuItem->setRotation(-90);
 		menuItem->setContentSize(CCSize(25.5,25.5));
 		menuItem->setID("reddit-button");
