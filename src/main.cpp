@@ -5,6 +5,7 @@
 #include <Geode/modify/LevelSearchLayer.hpp>
 #include <Geode/modify/ProfilePage.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
+#include <Geode/cocos/base_nodes/Layout.hpp>
 
 using namespace geode::prelude;
 
@@ -285,32 +286,30 @@ class $modify(ProfilePage){
 			if(m_rightArrow) m_rightArrow->setPositionX(386);
 
 			auto bottomMenu = mainLayer->getChildByID("bottom-menu");
+			bottomMenu->setLayout(
+				RowLayout::create()
+					->setGap(0.f)
+					->setGrowCrossAxis(true)
+					->setAxisAlignment(AxisAlignment::Center)
+				);
+			bottomMenu->updateLayout();
+			// if(m_ownProfile){
+				
+			// } else {
+			// 	auto messageButton = bottomMenu->getChildByID("message-button");
+			// 	auto friendButton = bottomMenu->getChildByID("friend-button");
+			// 	auto blockButton = bottomMenu->getChildByID("block-button");
 
-			if(m_ownProfile){
-				auto messageButton = bottomMenu->getChildByID("message-button");
-				auto friendButton = bottomMenu->getChildByID("friend-button");
-				auto requestsButton = bottomMenu->getChildByID("requests-button");
-				auto settingsButton = bottomMenu->getChildByID("settings-button");
+			// 	auto myLevels = bottomMenu->getChildByID("my-levels-button");
+			// 	auto myLists =bottomMenu->getChildByID("my-lists-button");
 
-				if(messageButton) messageButton->setPositionX(113.5);
-				if(friendButton) friendButton->setPositionX(156.5);
-				if(requestsButton) requestsButton->setPositionX(198.5);
-				if(settingsButton) settingsButton->setPositionX(240.5);
-			} else {
-				auto messageButton = bottomMenu->getChildByID("message-button");
-				auto friendButton = bottomMenu->getChildByID("friend-button");
-				auto blockButton = bottomMenu->getChildByID("block-button");
+			// 	if(messageButton) messageButton->setPositionX(5.75);
+			// 	if(friendButton) friendButton->setPositionX(38);
+			// 	if(blockButton) blockButton->setPositionX(70.25);
 
-				auto myLevels = bottomMenu->getChildByID("my-levels-button");
-				auto myLists =bottomMenu->getChildByID("my-lists-button");
-
-				if(messageButton) messageButton->setPositionX(5.75);
-				if(friendButton) friendButton->setPositionX(38);
-				if(blockButton) blockButton->setPositionX(70.25);
-
-				if(myLevels) myLevels->setPositionX(280);
-				if(myLists) myLists->setPositionX(311);
-			}
+			// 	if(myLevels) myLevels->setPositionX(280);
+			// 	if(myLists) myLists->setPositionX(311);
+			// }
 				
 		}
 
@@ -412,6 +411,9 @@ class $modify(GJGarageLayer){
 			auto diamondShardsIcon = dynamic_cast<CCSprite*>(this->getChildByID("diamond-shards-icon"));
 			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamond-shards-label"));
 
+			auto demonsIcon = dynamic_cast<CCSprite*>(this->getChildByID("demons-icon"));
+			auto demonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("demons-label"));
+
 			if(starsIcon) starsIcon->setPositionX(83);
 			if(starsLabel) starsLabel->setPositionX(126);
 
@@ -430,12 +432,12 @@ class $modify(GJGarageLayer){
 			// second row
 
 			if(diamondsIcon) {
-				diamondsIcon->setPositionX(148);
+				diamondsIcon->setPositionX(149);
 				diamondsIcon->setPositionY(307);
 			};
 			if(diamondsLabel) {
 				diamondsLabel->setPositionX(184);
-				diamondsLabel->setPositionY(306.5);
+				diamondsLabel->setPositionY(307);
 			}
 
 			if(diamondShardsIcon) {
@@ -443,8 +445,18 @@ class $modify(GJGarageLayer){
 				diamondShardsIcon->setPositionY(292);
 			}
 			if(diamondShardsLabel) {
-				diamondShardsLabel->setPositionX(180);
-				diamondShardsLabel->setPositionY(291.5);
+				diamondShardsLabel->setPositionX(184);
+				diamondShardsLabel->setPositionY(292);
+			}
+
+			if(demonsIcon){
+				demonsIcon->setPositionX(149);
+				demonsIcon->setPositionY(277);
+			}
+
+			if(demonsLabel){
+				demonsLabel->setPositionX(184);
+				demonsLabel->setPositionY(277);
 			}
 		}
 		return true;
