@@ -34,13 +34,13 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto redditSprite = CCSprite::create("reddit-button.png"_spr);
 		auto menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandlerModification::redditOpen));
 	
-		menuItem->setPosition(109,34);
+		menuItem->setPosition(109,34.5);
 		menuItem->setRotation(-90);
 		menuItem->setContentSize(CCSize(25.5,25.5));
 		menuItem->setID("reddit-button");
 		menuItem->setNormalImage(redditSprite);
 
-		redditSprite->setScale(0.9);
+		redditSprite->setScale(0.975);
 
 		socials->addChild(menuItem);
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
@@ -411,6 +411,7 @@ class $modify(GJGarageLayer){
 			auto diamondShardsIcon = dynamic_cast<CCSprite*>(this->getChildByID("diamond-shards-icon"));
 			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamond-shards-label"));
 
+			// demons in garage 
 			auto demonsIcon = dynamic_cast<CCSprite*>(this->getChildByID("demons-icon"));
 			auto demonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("demons-label"));
 
@@ -454,6 +455,7 @@ class $modify(GJGarageLayer){
 				demonsIcon->setPositionY(277);
 			}
 
+			// demons in garage 
 			if(demonsLabel){
 				demonsLabel->setPositionX(184);
 				demonsLabel->setPositionY(277);
