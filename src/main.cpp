@@ -207,7 +207,6 @@ class $modify(LevelSearchLayer) {
 			if (searchButton) searchButton->setVisible(false);
 			
 			if (userSearchButton) userSearchButton->setVisible(false);
-			
 
 			auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
 			auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
@@ -239,7 +238,7 @@ class $modify(LevelSearchLayer) {
 			searchMenu->addChild(sButton2);
 
 			auto barbg = getChildByID("level-search-bar-bg");
-			barbg->setPosition(262.5, 290);
+			barbg->setPosition(CCDirector::get()->getWinSize().width / 2, 290);
 			barbg->setScale(1.475, 1);
 		}
 		return true;
