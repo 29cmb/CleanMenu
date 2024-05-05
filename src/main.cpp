@@ -238,7 +238,7 @@ class $modify(LevelSearchLayer) {
 			searchMenu->addChild(sButton2);
 
 			auto barbg = getChildByID("level-search-bar-bg");
-			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f), 290);
+			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f) - 2.5f, 290);
 			barbg->setScale(1.475, 1);
 		}
 		return true;
