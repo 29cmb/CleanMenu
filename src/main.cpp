@@ -10,24 +10,19 @@
 using namespace geode::prelude;
 
 class $modify(LinkHandlerModification, MenuLayer) {
-	bool init(){
-		if(!MenuLayer::init()) return false;
-		auto socials = this->getChildByID("social-media-menu");
+	bool init() {
+		if (!MenuLayer::init()) return false;
+		
+		auto socials = getChildByID("social-media-menu");
 
 		if (socials) {
 			socials->setPosition(242, -15);
-		}
-		auto facebook = socials->getChildByID("facebook-button");
-		facebook->setPosition(-21.4, 32);
-		auto twitter = socials->getChildByID("twitter-button");
-		twitter->setPosition(5.6, 32);
-		auto youtube = socials->getChildByID("youtube-button");
-		youtube->setPosition(31.5,32);
-		auto twitch = socials->getChildByID("twitch-button");
-		twitch->setPosition(57.3, 32);
-		auto discord = socials->getChildByID("discord-button");
-		discord->setPosition(83, 32);
-		
+			if (auto facebook = socials->getChildByID("facebook-button")) facebook->setPosition(-21.4, 32);
+			if (auto twitter = socials->getChildByID("twitter-button")) twitter->setPosition(5.6, 32);
+			if (auto youtube = socials->getChildByID("youtube-button")) youtube->setPosition(31.5,32);
+			if (auto twitch = socials->getChildByID("twitch-button")) twitch->setPosition(57.3, 32);
+			if (auto discord = socials->getChildByID("discord-button")) discord->setPosition(83, 32);
+		} else { return true; }
 
 		//reddit button!!!!!
 
@@ -45,26 +40,25 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		socials->addChild(menuItem);
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
 		bool revertAccountPosition = Mod::get()->getSettingValue<bool>("revertProfileButton");
-		auto robtoplogo = socials->getChildByID("robtop-logo-button");
-		if (robtoplogo) {
+		if (auto robtoplogo = socials->getChildByID("robtop-logo-button")) {
 			robtoplogo->setPosition(-198,31);
 		}
 
-		auto account = this->getChildByID("profile-menu");
-		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
+		auto account = getChildByID("profile-menu");
 		auto accbtn = account->getChildByID("profile-button");
+		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
 
 		float accBtnSetting = Mod::get()->getSettingValue<double>("whichSideProfileButton");
-		auto username = this->getChildByID("player-username");
-		if(account && !revertAccountPosition){
-			if(accBtnSetting == 0 && robtopLogoHide == true){
+		auto username = getChildByID("player-username");
+		if (account && !revertAccountPosition && username) {
+			if (accBtnSetting == 0 && robtopLogoHide) {
 				// Reset in order to attempt to fix icon account button
 				accbtn->setPosition(27.5,29);
 				accbtn->setContentSize(CCSize(55,58));
 				username->setPosition(93,12);
 
 				account->setPosition(77,30);
-			} else if(accBtnSetting == 1 && hideMoreGames == true){
+			} else if (accBtnSetting == 1 && hideMoreGames) {
 				// Reset in order to attempt to fix icon account button
 				accbtn->setPosition(27.5,29);
 				accbtn->setContentSize(CCSize(55,58));
@@ -77,25 +71,22 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		// other settings
 		
 		auto logo = socials->getChildByID("robtop-logo-button");
-		if(logo){
+		if (logo) {
 			logo->setVisible(!robtopLogoHide);
 		}
 
 		bool socialsHide = Mod::get()->getSettingValue<bool>("hideSocials");
-		auto sm2 = this->getChildByID("social-media-menu");
-		if(sm2){
+		if (auto sm2 = getChildByID("social-media-menu")) {
 			sm2->setVisible(!socialsHide);
-			if(socialsHide == false){
-				auto bottomMenu = this->getChildByID("bottom-menu");
+			if (socialsHide == false) {
+				auto bottomMenu = getChildByID("bottom-menu");
 				if (bottomMenu) {
 					bottomMenu->setPositionY(58);
 				}
 			}
 		}
-
-		
-		auto moreGames = this->getChildByID("more-games-menu");
-		if(moreGames){
+	
+		if (auto moreGames = getChildByID("more-games-menu")) {
 			moreGames->setVisible(!hideMoreGames);
 		}
 
@@ -103,18 +94,18 @@ class $modify(LinkHandlerModification, MenuLayer) {
 	}
 
 	void redditOpen(CCObject* pSender) {
-        cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
-    }
+		cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
+	}
 
 };
 
 
-class $modify(CreatorLayer){
-	bool init(){
-		if(!CreatorLayer::init()) return false;
-		auto buttons = this->getChildByID("creator-buttons-menu");
+class $modify(CreatorLayer) {
+	bool init() {
+		if (!CreatorLayer::init()) return false;
+		auto buttons = getChildByID("creator-buttons-menu");
 		auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
-		if(buttons && !revert){
+		if (buttons && !revert) {
 			// buttons is order by index
 			auto featured = buttons->getChildByID("featured-button");
 			auto lists = buttons->getChildByID("lists-button");
@@ -139,9 +130,9 @@ class $modify(CreatorLayer){
 			std::vector<CCNode*> smallButtons = {featured, paths, mappacks, map, daily, weekly, event, gauntlets, scores, quests, versus};
 
 			for (auto &button : smallButtons) {
-				if(button){
+				if (button) {
 					auto sprite = dynamic_cast<CCSprite*>(button->getChildren()->objectAtIndex(0));
-					if(sprite){
+					if (sprite) {
 						sprite->setScale(0.55);
 						sprite->setAnchorPoint(smallButtonSpriteAnchorPoint);
 						button->setContentSize(smallButtonContentSize);
@@ -150,73 +141,72 @@ class $modify(CreatorLayer){
 			}
 
 			//move them all
-			if(featured) featured->setPosition(17.8, 117);
+			if (featured) featured->setPosition(17.8, 117);
 			
-			if(lists) lists->setPosition(268, 215.6);
+			if (lists) lists->setPosition(268, 215.6);
 			
-			if(paths) paths->setPosition(253, 117);
+			if (paths) paths->setPosition(253, 117);
 			
-			if(mappacks) mappacks->setPosition(429, 117);
+			if (mappacks) mappacks->setPosition(429, 117);
 			
-			if(search) search->setPosition(360.2, 215.6);
+			if (search) search->setPosition(360.2, 215.6);
 			
-			if(map) map->setPosition(218.9, 155);
+			if (map) map->setPosition(218.9, 155);
 			
-			if(daily) daily->setPosition(75.5,117);
+			if (daily) daily->setPosition(75.5,117);
 			
-			if(weekly) weekly->setPosition(134,117);
+			if (weekly) weekly->setPosition(134,117);
 			
-			if(gauntlets) gauntlets->setPosition(371.1, 117);
+			if (gauntlets) gauntlets->setPosition(371.1, 117);
 			
-			if(create) create->setPosition(86.8, 215.6);
+			if (create) create->setPosition(86.8, 215.6);
 			
-			if(saved) saved->setPosition(178.4, 215.6);
+			if (saved) saved->setPosition(178.4, 215.6);
 			
-			if(scores) scores->setPosition(193, 117);
+			if (scores) scores->setPosition(193, 117);
 			
-			if(quests) quests->setPosition(311.6, 117);
+			if (quests) quests->setPosition(311.6, 117);
 
-			if(event) event->setVisible(false);
-			if(versus) versus->setVisible(false);
-			if(map) map->setVisible(false);
+			if (event) event->setVisible(false);
+			if (versus) versus->setVisible(false);
+			if (map) map->setVisible(false);
 		}
 		return true;
 	}
 };
 
-class $modify(LevelSearchLayer){
-	bool init(int p1){
-		if(!LevelSearchLayer::init(p1)) return false;
+class $modify(LevelSearchLayer) {
+	bool init(int p1) {
+		if (!LevelSearchLayer::init(p1)) return false;
 
 		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
 
-		if(!dontdochanges){
-			auto filtersTitle = this->getChildByID("filters-title");
-			auto quickSearchTitle = this->getChildByID("quick-search-title");
+		if (!dontdochanges) {
+			auto filtersTitle = getChildByID("filters-title");
+			auto quickSearchTitle = getChildByID("quick-search-title");
 
-			if(filtersTitle) filtersTitle->setVisible(false);
+			if (filtersTitle) filtersTitle->setVisible(false);
 			
-			if(quickSearchTitle) quickSearchTitle->setVisible(false);
+			if (quickSearchTitle) quickSearchTitle->setVisible(false);
 			
 
-			auto quickSearch = this->getChildByID("quick-search-menu");
-			auto quickSearchBg = this->getChildByID("quick-search-bg");
+			auto quickSearch = getChildByID("quick-search-menu");
+			auto quickSearchBg = getChildByID("quick-search-bg");
 
 			quickSearch->setPositionY(145);
 			quickSearchBg->setPositionY(173);
 
-			auto levelSearchBg = this->getChildByID("level-search-bg");
+			auto levelSearchBg = getChildByID("level-search-bg");
 			levelSearchBg->setContentSize(CCSize(365, 72));
 			levelSearchBg->setPositionY(274);
 
-			auto searchMenu = this->getChildByID("search-button-menu");
+			auto searchMenu = getChildByID("search-button-menu");
 			auto searchButton = searchMenu->getChildByID("search-level-button");
 			auto userSearchButton = searchMenu->getChildByID("search-user-button");
 
-			if(searchButton) searchButton->setVisible(false);
+			if (searchButton) searchButton->setVisible(false);
 			
-			if(userSearchButton) userSearchButton->setVisible(false);
-			
+			if (userSearchButton) userSearchButton->setVisible(false);
 
 			auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
 			auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
@@ -247,22 +237,22 @@ class $modify(LevelSearchLayer){
 			
 			searchMenu->addChild(sButton2);
 
-			auto barbg = this->getChildByID("level-search-bar-bg");
-			barbg->setPosition(262.5, 290);
+			auto barbg = getChildByID("level-search-bar-bg");
+			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f) - 2.5f, 290);
 			barbg->setScale(1.475, 1);
 		}
 		return true;
 	}	
 };
 
-class $modify(ProfilePage){
-	void loadPageFromUserInfo(GJUserScore* a2){
+class $modify(ProfilePage) {
+	void loadPageFromUserInfo(GJUserScore* a2) {
 
 		ProfilePage::loadPageFromUserInfo(a2);
 
 		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
-		auto mainLayer = dynamic_cast<CCLayer*>(this->getChildren()->objectAtIndex(0));
-		if(mainLayer && !dontdochanges){
+		auto mainLayer = dynamic_cast<CCLayer*>(getChildren()->objectAtIndex(0));
+		if (mainLayer && !dontdochanges)  {
 			auto mainProfileMenu = mainLayer->getChildByID("main-menu");
 
 			auto commentButton = mainProfileMenu->getChildByID("comment-button");
@@ -273,190 +263,193 @@ class $modify(ProfilePage){
 			auto geodeContributionsBadge = mainProfileMenu->getChildByID("geode-badge");
 
 			// button repositioning in mainProfileMenu
-			if(commentButton){
+			if (commentButton) {
 				auto sprite = dynamic_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
-				if(sprite){
+				if (sprite) {
 					sprite->setScale(0.8);
 					commentButton->setPosition(378, -232);
 				}
 			}
 
-			if(historyButton) historyButton->setPosition(378, -141);
-			if(m_leftArrow) m_leftArrow->setPositionX(34);
-			if(m_rightArrow) m_rightArrow->setPositionX(386);
+			if (historyButton) historyButton->setPosition(378, -141);
+			if (m_leftArrow) m_leftArrow->setPositionX(34);
+			if (m_rightArrow) m_rightArrow->setPositionX(386);
 
-			auto bottomMenu = mainLayer->getChildByID("bottom-menu");
-			bottomMenu->setLayout(
+			if (auto bottomMenu = mainLayer->getChildByID("bottom-menu")) {
+				bottomMenu->setLayout(
 				RowLayout::create()
 					->setGap(0.f)
 					->setGrowCrossAxis(true)
 					->setAxisAlignment(AxisAlignment::Center)
 				);
-			bottomMenu->updateLayout();
-			// if(m_ownProfile){
-				
-			// } else {
-			// 	auto messageButton = bottomMenu->getChildByID("message-button");
-			// 	auto friendButton = bottomMenu->getChildByID("friend-button");
-			// 	auto blockButton = bottomMenu->getChildByID("block-button");
+				bottomMenu->updateLayout();
+			}
+			/*
+			if (!m_ownProfile) {
+				auto messageButton = bottomMenu->getChildByID("message-button");
+				auto friendButton = bottomMenu->getChildByID("friend-button");
+				auto blockButton = bottomMenu->getChildByID("block-button");
 
-			// 	auto myLevels = bottomMenu->getChildByID("my-levels-button");
-			// 	auto myLists =bottomMenu->getChildByID("my-lists-button");
+				auto myLevels = bottomMenu->getChildByID("my-levels-button");
+				auto myLists =bottomMenu->getChildByID("my-lists-button");
 
-			// 	if(messageButton) messageButton->setPositionX(5.75);
-			// 	if(friendButton) friendButton->setPositionX(38);
-			// 	if(blockButton) blockButton->setPositionX(70.25);
+				if (messageButton) messageButton->setPositionX(5.75);
+				if (friendButton) friendButton->setPositionX(38);
+				if (blockButton) blockButton->setPositionX(70.25);
 
-			// 	if(myLevels) myLevels->setPositionX(280);
-			// 	if(myLists) myLists->setPositionX(311);
-			// }
+				if (myLevels) myLevels->setPositionX(280);
+				if (myLists) myLists->setPositionX(311);
+			}
+			*/
 				
 		}
 
-		// auto socialsMenu = mainLayer->getChildByID("socials-menu");
-		// auto youtubeButton = socialsMenu->getChildByID("youtube-button");
-		// auto twitterButton = socialsMenu->getChildByID("twitter-button");
-		// auto twitchButton = socialsMenu->getChildByID("twitch-button");
+		/*
+		auto socialsMenu = mainLayer->getChildByID("socials-menu");
+		auto youtubeButton = socialsMenu->getChildByID("youtube-button");
+		auto twitterButton = socialsMenu->getChildByID("twitter-button");
+		auto twitchButton = socialsMenu->getChildByID("twitch-button");
 
-		// if(youtubeButton && twitterButton && twitchButton){
-		// 	auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-		// 	auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
-		// 	auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
+		if (youtubeButton && twitterButton && twitchButton) {
+			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
+			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
+			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
 
-		// 	youtubeSprite->setScale(0.75);
-		// 	twitterSprite->setScale(0.75);
-		// 	twitchSprite->setScale(0.75);
+			youtubeSprite->setScale(0.75);
+			twitterSprite->setScale(0.75);
+			twitchSprite->setScale(0.75);
 
-		// 	youtubeButton->setPosition(-17, 105);
-		// 	twitterButton->setPosition(-68, 105);
-		// 	twitchButton->setPosition(-43, 105);
-		// }
-		// if(youtubeButton && twitchButton && !twitterButton){
-		// 	auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-		// 	auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
-
-
-		// 	youtubeSprite->setScale(0.75);
-		// 	twitchSprite->setScale(0.75);
-
-		// 	youtubeSprite->setPosition(-30, 105);
-		// 	twitchSprite->setPosition(-56, 105);
-		// }
-		// if(youtubeButton && !twitchButton && !twitterButton){
-		// 	auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-
-		// 	youtubeSprite->setScale(0.75);
-		// 	youtubeSprite->setPosition(-44, 105);
-		// }
-		// if(youtubeButton && !twitchButton && twitterButton){
-		// 	auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-		// 	auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
+			youtubeButton->setPosition(-17, 105);
+			twitterButton->setPosition(-68, 105);
+			twitchButton->setPosition(-43, 105);
+		}
+		if (youtubeButton && twitchButton && !twitterButton) {
+			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
+			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
 
 
-		// 	youtubeSprite->setScale(0.75);
-		// 	twitterSprite->setScale(0.75);
+			youtubeSprite->setScale(0.75);
+			twitchSprite->setScale(0.75);
 
-		// 	youtubeSprite->setPosition(-30, 105);
-		// 	twitterSprite->setPosition(-56, 105);
-		// }
-		// if(!youtubeButton && !twitchButton && twitterButton){
-		// 	auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
-		// 	auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
+			youtubeSprite->setPosition(-30, 105);
+			twitchSprite->setPosition(-56, 105);
+		}
+		if (youtubeButton && !twitchButton && !twitterButton) {
+			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
+
+			youtubeSprite->setScale(0.75);
+			youtubeSprite->setPosition(-44, 105);
+		}
+		if (youtubeButton && !twitchButton && twitterButton) {
+			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
+			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
 
 
-		// 	twitterSprite->setScale(0.75);
-		// 	twitterSprite->setPosition(-44, 105);
-		// }
+			youtubeSprite->setScale(0.75);
+			twitterSprite->setScale(0.75);
+
+			youtubeSprite->setPosition(-30, 105);
+			twitterSprite->setPosition(-56, 105);
+		}
+		if (!youtubeButton && !twitchButton && twitterButton) {
+			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
+			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
+
+
+			twitterSprite->setScale(0.75);
+			twitterSprite->setPosition(-44, 105);
+		}
+		*/
 	}
 };
 
-class $modify(GJGarageLayer){
-	bool init(){
-		if(!GJGarageLayer::init()) return false;
+class $modify(GJGarageLayer) {
+	bool init() {
+		if (!GJGarageLayer::init()) return false;
 
 		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
 
-		if(!dontdochanges){
+		if (!dontdochanges) {
 
 			// omg we're finally back to 'this' calls
-			auto shardsMenu = this->getChildByID("shards-menu");
+			auto shardsMenu = getChildByID("shards-menu");
 			auto colorButton = shardsMenu->getChildByID("color-button");
 
-			auto topLeftMenu = this->getChildByID("top-left-menu");
+			auto topLeftMenu = getChildByID("top-left-menu");
 			auto shopButton = topLeftMenu->getChildByID("shop-button");
 			
-			if(shopButton) shopButton->setPositionX(493);
-			if(colorButton) colorButton->setPosition(473.25, -12.5);
+			if (shopButton) shopButton->setPositionX(493);
+			if (colorButton) colorButton->setPosition(473.25, -12.5);
 
-			//oh no, this is where the pain begins....
+			// oh no, this is where the pain begins....
 
-			auto starsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("stars-icon"));
-			auto starsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("stars-label"));
+			auto starsIcon =  dynamic_cast<CCSprite*>(getChildByID("stars-icon"));
+			auto starsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("stars-label"));
 
-			auto moonsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("moons-icon"));
-			auto moonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("moons-label"));
+			auto moonsIcon =  dynamic_cast<CCSprite*>(getChildByID("moons-icon"));
+			auto moonsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("moons-label"));
 
-			auto coinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("coins-icon"));
-			auto coinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("coins-label"));
+			auto coinsIcon =  dynamic_cast<CCSprite*>(getChildByID("coins-icon"));
+			auto coinsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("coins-label"));
 
-			auto userCoinsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("user-coins-icon"));
-			auto userCoinsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("user-coins-label"));
+			auto userCoinsIcon =  dynamic_cast<CCSprite*>(getChildByID("user-coins-icon"));
+			auto userCoinsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("user-coins-label"));
 
-			auto orbsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("orbs-icon"));
-			auto orbsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("orbs-label"));
+			auto orbsIcon =  dynamic_cast<CCSprite*>(getChildByID("orbs-icon"));
+			auto orbsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("orbs-label"));
 
-			auto diamondsIcon =  dynamic_cast<CCSprite*>(this->getChildByID("diamonds-icon"));
-			auto diamondsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamonds-label"));
+			auto diamondsIcon =  dynamic_cast<CCSprite*>(getChildByID("diamonds-icon"));
+			auto diamondsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("diamonds-label"));
 
-			auto diamondShardsIcon = dynamic_cast<CCSprite*>(this->getChildByID("diamond-shards-icon"));
-			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("diamond-shards-label"));
+			auto diamondShardsIcon = dynamic_cast<CCSprite*>(getChildByID("diamond-shards-icon"));
+			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("diamond-shards-label"));
 
 			// demons in garage 
-			auto demonsIcon = dynamic_cast<CCSprite*>(this->getChildByID("demons-icon"));
-			auto demonsLabel = dynamic_cast<CCLabelBMFont*>(this->getChildByID("demons-label"));
+			auto demonsIcon = dynamic_cast<CCSprite*>(getChildByID("demons-icon"));
+			auto demonsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("demons-label"));
 
-			if(starsIcon) starsIcon->setPositionX(83);
-			if(starsLabel) starsLabel->setPositionX(126);
+			if (starsIcon) starsIcon->setPositionX(83);
+			if (starsLabel) starsLabel->setPositionX(126);
 
-			if(moonsIcon) moonsIcon->setPositionX(83);
-			if(moonsLabel) moonsLabel->setPositionX(126);
+			if (moonsIcon) moonsIcon->setPositionX(83);
+			if (moonsLabel) moonsLabel->setPositionX(126);
 
-			if(coinsIcon) coinsIcon->setPositionX(83);
-			if(coinsLabel) coinsLabel->setPositionX(126);
+			if (coinsIcon) coinsIcon->setPositionX(83);
+			if (coinsLabel) coinsLabel->setPositionX(126);
 
-			if(userCoinsIcon) userCoinsIcon->setPositionX(83);
-			if(userCoinsLabel) userCoinsLabel->setPositionX(126);
+			if (userCoinsIcon) userCoinsIcon->setPositionX(83);
+			if (userCoinsLabel) userCoinsLabel->setPositionX(126);
 
-			if(orbsIcon) orbsIcon->setPositionX(83);
-			if(orbsLabel) orbsLabel->setPositionX(126);
+			if (orbsIcon) orbsIcon->setPositionX(83);
+			if (orbsLabel) orbsLabel->setPositionX(126);
 
 			// second row
 
-			if(diamondsIcon) {
+			if (diamondsIcon) {
 				diamondsIcon->setPositionX(149);
 				diamondsIcon->setPositionY(307);
 			};
-			if(diamondsLabel) {
+			if (diamondsLabel) {
 				diamondsLabel->setPositionX(184);
 				diamondsLabel->setPositionY(307);
 			}
 
-			if(diamondShardsIcon) {
+			if (diamondShardsIcon) {
 				diamondShardsIcon->setPositionX(149);
 				diamondShardsIcon->setPositionY(292);
 			}
-			if(diamondShardsLabel) {
+			if (diamondShardsLabel) {
 				diamondShardsLabel->setPositionX(184);
 				diamondShardsLabel->setPositionY(292);
 			}
 
-			if(demonsIcon){
+			if (demonsIcon) {
 				demonsIcon->setPositionX(149);
 				demonsIcon->setPositionY(277);
 			}
 
 			// demons in garage 
-			if(demonsLabel){
+			if (demonsLabel) {
 				demonsLabel->setPositionX(184);
 				demonsLabel->setPositionY(277);
 			}
