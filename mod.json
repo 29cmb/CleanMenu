@@ -82,5 +82,12 @@
 	"issues": {
 		"info": "Report issues to the github repository",
 		"url": "https://github.com/29cmb/CleanMenu/issues"
-	}
+	},
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": "v1.12.0",
+			"importance": "required"
+		}
+	]
 }
