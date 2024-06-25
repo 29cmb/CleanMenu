@@ -6,6 +6,7 @@
 #include <Geode/modify/ProfilePage.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/cocos/base_nodes/Layout.hpp>
+#include <Geode/loader/Loader.hpp>
 
 using namespace geode::prelude;
 
@@ -105,7 +106,11 @@ class $modify(CreatorLayer) {
 		if (!CreatorLayer::init()) return false;
 		auto buttons = getChildByID("creator-buttons-menu");
 		auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
-		if (buttons && !revert) {
+		if (buttons && !revert && 
+			!Loader::get()->isModLoaded("alphalaneous.pages_api") &&
+			!Loader::get()->isModLoaded("xanii.super_expert") &&
+			!Loader::get()->isModLoaded("minemaker0430.gddp_integration")
+		) {
 			// buttons is order by index
 			auto featured = buttons->getChildByID("featured-button");
 			auto lists = buttons->getChildByID("lists-button");

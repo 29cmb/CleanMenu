@@ -1,3 +1,7 @@
+# v2.1.4
+- ignore v2.1.1 - v1.1.3
+- Made it so certain mods cause creator layer changes not to take effect
+
 # v2.1.1
 - Fix crash that occurs when blocking people
 - Android + macOS support
