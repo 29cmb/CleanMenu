@@ -5,7 +5,7 @@
 #include <Geode/modify/LevelSearchLayer.hpp>
 #include <Geode/modify/ProfilePage.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
-#include <Geode/cocos/base_nodes/Layout.hpp>
+#include <Geode/ui/Layout.hpp>
 #include <Geode/loader/Loader.hpp>
 
 using namespace geode::prelude;
