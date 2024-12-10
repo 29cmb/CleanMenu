@@ -30,7 +30,7 @@ class $modify(LinkHandlerModification, MenuLayer) {
 		auto redditSprite = CCSprite::create("reddit-button.png"_spr);
 		auto menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandlerModification::redditOpen));
 	
-		menuItem->setPosition(109,32.5);
+		menuItem->setPosition(109,32);
 		menuItem->setRotation(-90);
 		menuItem->setContentSize(CCSize(25.5,25.5));
 		menuItem->setID("reddit-button");
@@ -97,7 +97,6 @@ class $modify(LinkHandlerModification, MenuLayer) {
 	void redditOpen(CCObject* pSender) {
 		cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
 	}
-
 };
 
 
@@ -111,7 +110,6 @@ class $modify(CreatorLayer) {
 			!Loader::get()->isModLoaded("xanii.super_expert") &&
 			!Loader::get()->isModLoaded("minemaker0430.gddp_integration")
 		) {
-			// buttons is order by index
 			auto featured = buttons->getChildByID("featured-button");
 			auto lists = buttons->getChildByID("lists-button");
 			auto paths = buttons->getChildByID("paths-button");
@@ -128,51 +126,52 @@ class $modify(CreatorLayer) {
 			auto quests = buttons->getChildByID("quests-button");
 			auto versus = buttons->getChildByID("versus-button");
 
-			auto smallButtonContentSize = CCSize(50,50);
-			auto smallButtonSpriteAnchorPoint = CCPoint(.8,.8);
+			buttons->setLayout(nullptr);
+
+			auto lowerButtons = CCMenu::create();
+			lowerButtons->setID("lower-buttons-menu");
+			lowerButtons->setContentSize(CCSize(496, 82));
+			lowerButtons->setPosition(223.5, 122);
+			buttons->addChild(lowerButtons);
+
+			auto upperButtons = CCMenu::create();
+			upperButtons->setID("upper-buttons-menu");
+			upperButtons->setContentSize(CCSize(450, 83.6));
+			upperButtons->setPosition(224.5, 196);
+			buttons->addChild(upperButtons);
+
+			lowerButtons->setLayout(RowLayout::create()->setGap(7.5)->setAxisAlignment(AxisAlignment::Center));
+			upperButtons->setLayout(RowLayout::create()->setGap(0.5)->setAxisAlignment(AxisAlignment::Center));
 
 			// all small buttons have the same size properties, but different positions. This just saves lines
-			std::vector<CCNode*> smallButtons = {featured, paths, mappacks, map, daily, weekly, event, gauntlets, scores, quests, versus};
+			std::vector<CCNode*> smallButtons = {featured, paths, mappacks, daily, weekly, event, gauntlets, scores, quests};
+			std::vector<CCNode*> upperButtonsList = {create, saved, lists, search};
 
-			for (auto &button : smallButtons) {
+			for (const auto &button : smallButtons) {
 				if (button) {
+					button->removeFromParent();
+
 					auto sprite = dynamic_cast<CCSprite*>(button->getChildren()->objectAtIndex(0));
 					if (sprite) {
 						sprite->setScale(0.55);
-						sprite->setAnchorPoint(smallButtonSpriteAnchorPoint);
-						button->setContentSize(smallButtonContentSize);
+						sprite->setAnchorPoint(CCPoint(.8,.8));
+						button->setContentSize(CCSize(50,50));
 					}
+
+					lowerButtons->addChild(button);
 				}
 			}
 
-			//move them all
-			if (featured) featured->setPosition(17.8, 117);
-			
-			if (lists) lists->setPosition(268, 215.6);
-			
-			if (paths) paths->setPosition(253, 117);
-			
-			if (mappacks) mappacks->setPosition(429, 117);
-			
-			if (search) search->setPosition(360.2, 215.6);
-			
-			if (map) map->setPosition(218.9, 155);
-			
-			if (daily) daily->setPosition(75.5,117);
-			
-			if (weekly) weekly->setPosition(134,117);
-			
-			if (gauntlets) gauntlets->setPosition(371.1, 117);
-			
-			if (create) create->setPosition(86.8, 215.6);
-			
-			if (saved) saved->setPosition(178.4, 215.6);
-			
-			if (scores) scores->setPosition(193, 117);
-			
-			if (quests) quests->setPosition(311.6, 117);
+			for (const auto &button : upperButtonsList) {
+				if (button) {
+					button->removeFromParent();
+					upperButtons->addChild(button);
+				}
+			}
 
-			if (event) event->setVisible(false);
+			lowerButtons->updateLayout();
+			upperButtons->updateLayout();
+
 			if (versus) versus->setVisible(false);
 			if (map) map->setVisible(false);
 		}
@@ -263,11 +262,9 @@ class $modify(ProfilePage) {
 			auto commentButton = mainProfileMenu->getChildByID("comment-button");
 			auto historyButton = mainProfileMenu->getChildByID("comment-history-button");
 
-			// handle mod-specific exceptions
 			auto cvoltonUsernameButton = mainProfileMenu->getChildByID("cvolton.betterinfo/username-button");
 			auto geodeContributionsBadge = mainProfileMenu->getChildByID("geode-badge");
 
-			// button repositioning in mainProfileMenu
 			if (commentButton) {
 				auto sprite = dynamic_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
 				if (sprite) {
@@ -289,82 +286,7 @@ class $modify(ProfilePage) {
 				);
 				bottomMenu->updateLayout();
 			}
-			/*
-			if (!m_ownProfile) {
-				auto messageButton = bottomMenu->getChildByID("message-button");
-				auto friendButton = bottomMenu->getChildByID("friend-button");
-				auto blockButton = bottomMenu->getChildByID("block-button");
-
-				auto myLevels = bottomMenu->getChildByID("my-levels-button");
-				auto myLists =bottomMenu->getChildByID("my-lists-button");
-
-				if (messageButton) messageButton->setPositionX(5.75);
-				if (friendButton) friendButton->setPositionX(38);
-				if (blockButton) blockButton->setPositionX(70.25);
-
-				if (myLevels) myLevels->setPositionX(280);
-				if (myLists) myLists->setPositionX(311);
-			}
-			*/
-				
 		}
-
-		/*
-		auto socialsMenu = mainLayer->getChildByID("socials-menu");
-		auto youtubeButton = socialsMenu->getChildByID("youtube-button");
-		auto twitterButton = socialsMenu->getChildByID("twitter-button");
-		auto twitchButton = socialsMenu->getChildByID("twitch-button");
-
-		if (youtubeButton && twitterButton && twitchButton) {
-			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
-			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
-
-			youtubeSprite->setScale(0.75);
-			twitterSprite->setScale(0.75);
-			twitchSprite->setScale(0.75);
-
-			youtubeButton->setPosition(-17, 105);
-			twitterButton->setPosition(-68, 105);
-			twitchButton->setPosition(-43, 105);
-		}
-		if (youtubeButton && twitchButton && !twitterButton) {
-			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
-
-
-			youtubeSprite->setScale(0.75);
-			twitchSprite->setScale(0.75);
-
-			youtubeSprite->setPosition(-30, 105);
-			twitchSprite->setPosition(-56, 105);
-		}
-		if (youtubeButton && !twitchButton && !twitterButton) {
-			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-
-			youtubeSprite->setScale(0.75);
-			youtubeSprite->setPosition(-44, 105);
-		}
-		if (youtubeButton && !twitchButton && twitterButton) {
-			auto youtubeSprite = youtubeButton->getChildren()->objectAtIndex(0);
-			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
-
-
-			youtubeSprite->setScale(0.75);
-			twitterSprite->setScale(0.75);
-
-			youtubeSprite->setPosition(-30, 105);
-			twitterSprite->setPosition(-56, 105);
-		}
-		if (!youtubeButton && !twitchButton && twitterButton) {
-			auto twitterSprite = twitterButton->getChildren()->objectAtIndex(0);
-			auto twitchSprite =  twitchButton->getChildren()->objectAtIndex(0);
-
-
-			twitterSprite->setScale(0.75);
-			twitterSprite->setPosition(-44, 105);
-		}
-		*/
 	}
 };
 
