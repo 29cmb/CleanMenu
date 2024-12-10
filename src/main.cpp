@@ -322,89 +322,9 @@ class $modify(GJGarageLayer) {
 		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
 
 		if (!dontdochanges) {
-
-			// omg we're finally back to 'this' calls
 			auto shardsMenu = getChildByID("shards-menu");
 			auto colorButton = shardsMenu->getChildByID("color-button");
-
-			auto topLeftMenu = getChildByID("top-left-menu");
-			auto shopButton = topLeftMenu->getChildByID("shop-button");
-			
-			if (shopButton) shopButton->setPositionX(493);
 			if (colorButton) colorButton->setPosition(473.25, -12.5);
-
-			// oh no, this is where the pain begins....
-
-			auto starsIcon =  dynamic_cast<CCSprite*>(getChildByID("stars-icon"));
-			auto starsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("stars-label"));
-
-			auto moonsIcon =  dynamic_cast<CCSprite*>(getChildByID("moons-icon"));
-			auto moonsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("moons-label"));
-
-			auto coinsIcon =  dynamic_cast<CCSprite*>(getChildByID("coins-icon"));
-			auto coinsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("coins-label"));
-
-			auto userCoinsIcon =  dynamic_cast<CCSprite*>(getChildByID("user-coins-icon"));
-			auto userCoinsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("user-coins-label"));
-
-			auto orbsIcon =  dynamic_cast<CCSprite*>(getChildByID("orbs-icon"));
-			auto orbsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("orbs-label"));
-
-			auto diamondsIcon =  dynamic_cast<CCSprite*>(getChildByID("diamonds-icon"));
-			auto diamondsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("diamonds-label"));
-
-			auto diamondShardsIcon = dynamic_cast<CCSprite*>(getChildByID("diamond-shards-icon"));
-			auto diamondShardsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("diamond-shards-label"));
-
-			// demons in garage 
-			auto demonsIcon = dynamic_cast<CCSprite*>(getChildByID("demons-icon"));
-			auto demonsLabel = dynamic_cast<CCLabelBMFont*>(getChildByID("demons-label"));
-
-			if (starsIcon) starsIcon->setPositionX(83);
-			if (starsLabel) starsLabel->setPositionX(126);
-
-			if (moonsIcon) moonsIcon->setPositionX(83);
-			if (moonsLabel) moonsLabel->setPositionX(126);
-
-			if (coinsIcon) coinsIcon->setPositionX(83);
-			if (coinsLabel) coinsLabel->setPositionX(126);
-
-			if (userCoinsIcon) userCoinsIcon->setPositionX(83);
-			if (userCoinsLabel) userCoinsLabel->setPositionX(126);
-
-			if (orbsIcon) orbsIcon->setPositionX(83);
-			if (orbsLabel) orbsLabel->setPositionX(126);
-
-			// second row
-
-			if (diamondsIcon) {
-				diamondsIcon->setPositionX(149);
-				diamondsIcon->setPositionY(307);
-			};
-			if (diamondsLabel) {
-				diamondsLabel->setPositionX(184);
-				diamondsLabel->setPositionY(307);
-			}
-
-			if (diamondShardsIcon) {
-				diamondShardsIcon->setPositionX(149);
-				diamondShardsIcon->setPositionY(292);
-			}
-			if (diamondShardsLabel) {
-				diamondShardsLabel->setPositionX(184);
-				diamondShardsLabel->setPositionY(292);
-			}
-
-			if (demonsIcon) {
-				demonsIcon->setPositionX(149);
-				demonsIcon->setPositionY(277);
-			}
-
-			// demons in garage 
-			if (demonsLabel) {
-				demonsLabel->setPositionX(184);
-				demonsLabel->setPositionY(277);
-			}
 		}
 		return true;
 	}
