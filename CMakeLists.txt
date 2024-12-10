@@ -9,7 +9,6 @@ project(CleanMenu VERSION 1.0.0)
 # Set up the mod binary
 add_library(${PROJECT_NAME} SHARED
 	src/main.cpp
-	# Add your cpp files here
 )
 
 if (NOT DEFINED ENV{GEODE_SDK})

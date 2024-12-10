@@ -9,6 +9,30 @@
 #include <Geode/loader/Loader.hpp>
 
 using namespace geode::prelude;
+namespace
+{
+	std::map<std::string, std::vector<std::string>> decompatibilities = {
+		{"CreatorLayer", {"alphalaneous.pages_api", "xanii.super_expert", "minemaker0430.gddp_integration"}}
+	};
+
+	bool decompatibleModsLoaded(const std::string& key)
+	{
+		bool isLoaded = false;
+		if (decompatibilities.find(key) != decompatibilities.end())
+		{
+			for (const auto &mod : decompatibilities[key])
+			{
+				if (Loader::get()->isModLoaded(mod))
+				{
+					isLoaded = true;
+					break;
+				}
+			}
+		}
+
+		return isLoaded;
+	}
+}
 
 class $modify(LinkHandlerModification, MenuLayer) {
 	bool init() {
@@ -99,17 +123,12 @@ class $modify(LinkHandlerModification, MenuLayer) {
 	}
 };
 
-
 class $modify(CreatorLayer) {
 	bool init() {
 		if (!CreatorLayer::init()) return false;
 		auto buttons = getChildByID("creator-buttons-menu");
 		auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
-		if (buttons && !revert && 
-			!Loader::get()->isModLoaded("alphalaneous.pages_api") &&
-			!Loader::get()->isModLoaded("xanii.super_expert") &&
-			!Loader::get()->isModLoaded("minemaker0430.gddp_integration")
-		) {
+		if (buttons && !revert && !decompatibleModsLoaded("CreatorLayer")) {
 			auto featured = buttons->getChildByID("featured-button");
 			auto lists = buttons->getChildByID("lists-button");
 			auto paths = buttons->getChildByID("paths-button");
@@ -244,6 +263,13 @@ class $modify(LevelSearchLayer) {
 			auto barbg = getChildByID("level-search-bar-bg");
 			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f) - 2.5f, 290);
 			barbg->setScale(1.475, 1);
+
+			if (auto searchBar = dynamic_cast<CCTextInputNode*>(getChildByID("search-bar"))) {
+				searchBar->setContentSize(CCSize(306, 50));
+				if (auto textField = dynamic_cast<CCTextFieldTTF*>(searchBar->getChildren()->objectAtIndex(0))){
+					textField->setContentSize(CCSize(306, 26.75));
+				}
+			}
 		}
 		return true;
 	}	
@@ -251,7 +277,6 @@ class $modify(LevelSearchLayer) {
 
 class $modify(ProfilePage) {
 	void loadPageFromUserInfo(GJUserScore* a2) {
-
 		ProfilePage::loadPageFromUserInfo(a2);
 
 		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
