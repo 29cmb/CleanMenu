@@ -1,3 +1,9 @@
+# v2.2.0
+- Removed the extremely small changes on the garage layer
+- Improve compatibility with other mods on the creator layer
+- Remove the layout from the creator layer (surely this won't backfire in any way whatsoever!)
+- Clean up the code
+
 # v2.1.4
 - ignore v2.1.1 - v1.1.3
 - Made it so certain mods cause creator layer changes not to take effect
@@ -16,7 +22,6 @@
 
 # v2.0.0
 Introduced a bunch of new modifications
-
 
 New features
 - Icon kit is moved around a bit with the stats and color button being moved

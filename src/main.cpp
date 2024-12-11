@@ -12,7 +12,7 @@ using namespace geode::prelude;
 namespace
 {
 	std::map<std::string, std::vector<std::string>> decompatibilities = {
-		{"CreatorLayer", {"alphalaneous.pages_api", "xanii.super_expert", "minemaker0430.gddp_integration"}}
+		{"CreatorLayer", {"xanii.super_expert", "minemaker0430.gddp_integration"}}
 	};
 
 	bool decompatibleModsLoaded(const std::string& key)
@@ -93,8 +93,6 @@ class $modify(LinkHandlerModification, MenuLayer) {
 			}
 		}
 
-		// other settings
-		
 		auto logo = socials->getChildByID("robtop-logo-button");
 		if (logo) {
 			logo->setVisible(!robtopLogoHide);

@@ -11,6 +11,13 @@ add_library(${PROJECT_NAME} SHARED
 	src/main.cpp
 )
 
+find_program(SCCACHE sccache REQUIRED)
+
+set(CMAKE_C_COMPILER_LAUNCHER ${SCCACHE})
+set(CMAKE_CXX_COMPILER_LAUNCHER ${SCCACHE})
+set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT Embedded)
+cmake_policy(SET CMP0141 NEW)
+
 if (NOT DEFINED ENV{GEODE_SDK})
 	message(FATAL_ERROR "Unable to find Geode SDK! Please define GEODE_SDK environment variable to point to Geode")
 else()
