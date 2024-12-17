@@ -11,16 +11,16 @@
 using namespace geode::prelude;
 namespace
 {
-	std::map<std::string, std::vector<std::string>> decompatibilities = {
-		{"CreatorLayer", {"xanii.super_expert", "minemaker0430.gddp_integration"}}
+	std::map<std::string, std::vector<std::string>> incompatibilities = {
+		{"CreatorLayer", {"xanii.super_expert", "minemaker0430.gddp_integration", "alphalaneous.vanilla_pages"}}
 	};
 
-	bool decompatibleModsLoaded(const std::string& key)
+	bool incompatibleModsLoaded(const std::string& key)
 	{
 		bool isLoaded = false;
-		if (decompatibilities.find(key) != decompatibilities.end())
+		if (incompatibilities.contains(key))
 		{
-			for (const auto &mod : decompatibilities[key])
+			for (const auto &mod : incompatibilities[key])
 			{
 				if (Loader::get()->isModLoaded(mod))
 				{
@@ -124,24 +124,24 @@ class $modify(LinkHandlerModification, MenuLayer) {
 class $modify(CreatorLayer) {
 	bool init() {
 		if (!CreatorLayer::init()) return false;
-		auto buttons = getChildByID("creator-buttons-menu");
-		auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
-		if (buttons && !revert && !decompatibleModsLoaded("CreatorLayer")) {
-			auto featured = buttons->getChildByID("featured-button");
-			auto lists = buttons->getChildByID("lists-button");
-			auto paths = buttons->getChildByID("paths-button");
-			auto mappacks = buttons->getChildByID("map-packs-button");
-			auto search = buttons->getChildByID("search-button");
-			auto map = buttons->getChildByID("map-button");
-			auto daily = buttons->getChildByID("daily-button");
-			auto weekly = buttons->getChildByID("weekly-button");
-			auto event = buttons->getChildByID("event-button");
-			auto gauntlets = buttons->getChildByID("gauntlets-button");
-			auto create = buttons->getChildByID("create-button");
-			auto saved = buttons->getChildByID("saved-button");
-			auto scores = buttons->getChildByID("scores-button");
-			auto quests = buttons->getChildByID("quests-button");
-			auto versus = buttons->getChildByID("versus-button");
+		const auto buttons = getChildByID("creator-buttons-menu");
+		const auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
+		if (buttons && !revert && !incompatibleModsLoaded("CreatorLayer")) {
+			const auto featured = buttons->getChildByID("featured-button");
+			const auto lists = buttons->getChildByID("lists-button");
+			const auto paths = buttons->getChildByID("paths-button");
+			const auto mappacks = buttons->getChildByID("map-packs-button");
+			const auto search = buttons->getChildByID("search-button");
+			const auto map = buttons->getChildByID("map-button");
+			const auto daily = buttons->getChildByID("daily-button");
+			const auto weekly = buttons->getChildByID("weekly-button");
+			const auto event = buttons->getChildByID("event-button");
+			const auto gauntlets = buttons->getChildByID("gauntlets-button");
+			const auto create = buttons->getChildByID("create-button");
+			const auto saved = buttons->getChildByID("saved-button");
+			const auto scores = buttons->getChildByID("scores-button");
+			const auto quests = buttons->getChildByID("quests-button");
+			const auto versus = buttons->getChildByID("versus-button");
 
 			buttons->setLayout(nullptr);
 
@@ -168,8 +168,7 @@ class $modify(CreatorLayer) {
 				if (button) {
 					button->removeFromParent();
 
-					auto sprite = dynamic_cast<CCSprite*>(button->getChildren()->objectAtIndex(0));
-					if (sprite) {
+					if (auto sprite = typeinfo_cast<CCSprite*>(button->getChildren()->objectAtIndex(0))) {
 						sprite->setScale(0.55);
 						sprite->setAnchorPoint(CCPoint(.8,.8));
 						button->setContentSize(CCSize(50,50));
@@ -200,38 +199,36 @@ class $modify(LevelSearchLayer) {
 	bool init(int p1) {
 		if (!LevelSearchLayer::init(p1)) return false;
 
-		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
+		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
 
 		if (!dontdochanges) {
-			auto filtersTitle = getChildByID("filters-title");
-			auto quickSearchTitle = getChildByID("quick-search-title");
+			const auto filtersTitle = getChildByID("filters-title");
+			const auto quickSearchTitle = getChildByID("quick-search-title");
 
 			if (filtersTitle) filtersTitle->setVisible(false);
-			
 			if (quickSearchTitle) quickSearchTitle->setVisible(false);
-			
 
-			auto quickSearch = getChildByID("quick-search-menu");
-			auto quickSearchBg = getChildByID("quick-search-bg");
+			const auto quickSearch = getChildByID("quick-search-menu");
+			const auto quickSearchBg = getChildByID("quick-search-bg");
 
 			quickSearch->setPositionY(145);
 			quickSearchBg->setPositionY(173);
 
-			auto levelSearchBg = getChildByID("level-search-bg");
+			const auto levelSearchBg = getChildByID("level-search-bg");
 			levelSearchBg->setContentSize(CCSize(365, 72));
 			levelSearchBg->setPositionY(274);
 
-			auto searchMenu = getChildByID("search-button-menu");
-			auto searchButton = searchMenu->getChildByID("search-level-button");
-			auto userSearchButton = searchMenu->getChildByID("search-user-button");
+			const auto searchMenu = getChildByID("search-button-menu");
+			const auto searchButton = searchMenu->getChildByID("search-level-button");
+			const auto userSearchButton = searchMenu->getChildByID("search-user-button");
 
 			if (searchButton) searchButton->setVisible(false);
 			
 			if (userSearchButton) userSearchButton->setVisible(false);
 
-			auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
-			auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
-			auto label1 = CCLabelBMFont::create("Search Levels", "bigFont.fnt");
+			const auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
+			const auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
+			const auto label1 = CCLabelBMFont::create("Search Levels", "bigFont.fnt");
 
 			label1->setScale(0.4);
 			label1->setPosition(78, 14);
@@ -243,9 +240,9 @@ class $modify(LevelSearchLayer) {
 
 			searchMenu->addChild(sButton);
 
-			auto largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
-			auto sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
-			auto label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
+			const auto largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
+			const auto sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
+			const auto label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
 
 			label2->setScale(0.4);
 			label2->setPosition(83, 14);
@@ -258,13 +255,13 @@ class $modify(LevelSearchLayer) {
 			
 			searchMenu->addChild(sButton2);
 
-			auto barbg = getChildByID("level-search-bar-bg");
+			const auto barbg = getChildByID("level-search-bar-bg");
 			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f) - 2.5f, 290);
 			barbg->setScale(1.475, 1);
 
-			if (auto searchBar = dynamic_cast<CCTextInputNode*>(getChildByID("search-bar"))) {
+			if (const auto searchBar = typeinfo_cast<CCTextInputNode*>(getChildByID("search-bar"))) {
 				searchBar->setContentSize(CCSize(306, 50));
-				if (auto textField = dynamic_cast<CCTextFieldTTF*>(searchBar->getChildren()->objectAtIndex(0))){
+				if (const auto textField = typeinfo_cast<CCTextFieldTTF*>(searchBar->getChildren()->objectAtIndex(0))){
 					textField->setContentSize(CCSize(306, 26.75));
 				}
 			}
@@ -277,19 +274,19 @@ class $modify(ProfilePage) {
 	void loadPageFromUserInfo(GJUserScore* a2) {
 		ProfilePage::loadPageFromUserInfo(a2);
 
-		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
-		auto mainLayer = dynamic_cast<CCLayer*>(getChildren()->objectAtIndex(0));
+		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
+		const auto mainLayer = typeinfo_cast<CCLayer*>(getChildren()->objectAtIndex(0));
 		if (mainLayer && !dontdochanges)  {
-			auto mainProfileMenu = mainLayer->getChildByID("main-menu");
+			const auto mainProfileMenu = mainLayer->getChildByID("main-menu");
 
-			auto commentButton = mainProfileMenu->getChildByID("comment-button");
-			auto historyButton = mainProfileMenu->getChildByID("comment-history-button");
+			const auto commentButton = mainProfileMenu->getChildByID("comment-button");
+			const auto historyButton = mainProfileMenu->getChildByID("comment-history-button");
 
-			auto cvoltonUsernameButton = mainProfileMenu->getChildByID("cvolton.betterinfo/username-button");
-			auto geodeContributionsBadge = mainProfileMenu->getChildByID("geode-badge");
+			const auto cvoltonUsernameButton = mainProfileMenu->getChildByID("cvolton.betterinfo/username-button");
+			const auto geodeContributionsBadge = mainProfileMenu->getChildByID("geode-badge");
 
 			if (commentButton) {
-				auto sprite = dynamic_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
+				const auto sprite = typeinfo_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
 				if (sprite) {
 					sprite->setScale(0.8);
 					commentButton->setPosition(378, -232);
@@ -300,7 +297,7 @@ class $modify(ProfilePage) {
 			if (m_leftArrow) m_leftArrow->setPositionX(34);
 			if (m_rightArrow) m_rightArrow->setPositionX(386);
 
-			if (auto bottomMenu = mainLayer->getChildByID("bottom-menu")) {
+			if (const auto bottomMenu = mainLayer->getChildByID("bottom-menu")) {
 				bottomMenu->setLayout(
 				RowLayout::create()
 					->setGap(0.f)
@@ -317,11 +314,11 @@ class $modify(GJGarageLayer) {
 	bool init() {
 		if (!GJGarageLayer::init()) return false;
 
-		auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
+		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
 
 		if (!dontdochanges) {
-			auto shardsMenu = getChildByID("shards-menu");
-			auto colorButton = shardsMenu->getChildByID("color-button");
+			const auto shardsMenu = getChildByID("shards-menu");
+			const auto colorButton = shardsMenu->getChildByID("color-button");
 			if (colorButton) colorButton->setPosition(473.25, -12.5);
 		}
 		return true;
