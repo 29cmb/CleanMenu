@@ -1,9 +1,9 @@
 {
-	"geode": "4.0.1",
+	"geode": "4.5.0",
 	"gd": {
 		"win": "2.2074"
 	},
-	"version": "v2.2.0",
+	"version": "v2.2.1",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
@@ -85,7 +85,7 @@
 	"dependencies": [
 		{
 			"id": "geode.node-ids",
-			"version": "v1.18.0",
+			"version": "v1.20.1",
 			"importance": "required"
 		}
 	]
