@@ -34,69 +34,93 @@ namespace
 	}
 }
 
-class $modify(LinkHandlerModification, MenuLayer) {
+class $modify(LinkHandler, MenuLayer) {
 	bool init() {
 		if (!MenuLayer::init()) return false;
+		auto winSize = CCDirector::get()->getWinSize();
 		
 		auto socials = getChildByID("social-media-menu");
-
-		if (socials) {
-			socials->setPosition(242, -15);
-			if (auto facebook = socials->getChildByID("facebook-button")) facebook->setPosition(-21.4, 32);
-			if (auto twitter = socials->getChildByID("twitter-button")) twitter->setPosition(5.6, 32);
-			if (auto youtube = socials->getChildByID("youtube-button")) youtube->setPosition(31.5,32);
-			if (auto twitch = socials->getChildByID("twitch-button")) twitch->setPosition(57.3, 32);
-			if (auto discord = socials->getChildByID("discord-button")) discord->setPosition(83, 32);
-		} else { return true; }
+		if (!socials) return true;
+		
+		socials->setAnchorPoint(CCPoint(0.5, 0.5));
+		socials->setScale(1.5);
+		socials->setPosition((winSize.width / 2.0), 19);
+		socials->setLayout(SimpleAxisLayout::create(Axis::Row));
 
 		//reddit button!!!!!
 
-		auto redditSprite = CCSprite::create("reddit-button.png"_spr);
-		auto menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandlerModification::redditOpen));
+		CCSprite* redditSprite = CCSprite::create("reddit-button.png"_spr);
+		CCMenuItemSpriteExtra* menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandler::redditOpen));
 	
-		menuItem->setPosition(109,32);
+		// menuItem->setPosition(109,32);
 		menuItem->setRotation(-90);
 		menuItem->setContentSize(CCSize(25.5,25.5));
 		menuItem->setID("reddit-button");
 		menuItem->setNormalImage(redditSprite);
 
 		redditSprite->setScale(0.975);
-
 		socials->addChild(menuItem);
+		socials->updateLayout();
+
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
 		bool revertAccountPosition = Mod::get()->getSettingValue<bool>("revertProfileButton");
-		if (auto robtoplogo = socials->getChildByID("robtop-logo-button")) {
-			robtoplogo->setPosition(-198,31);
+
+		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
+		auto robtopLogo = socials->getChildByID("robtop-logo-button");
+
+		if(robtopLogo) {
+			if(robtopLogoHide == false) {
+				// Recreate the logo in order to seperate it from the social icons
+				CCSprite* rtlSprite = CCSprite::createWithSpriteFrameName("robtoplogo_small.png");
+				rtlSprite->setContentSize(CCSize(100, 28));
+				rtlSprite->setScale(0.8);
+
+				CCMenuItemSpriteExtra* rtlButton = CCMenuItemSpriteExtra::create(rtlSprite, nullptr, this, menu_selector(LinkHandler::robtopOpen));
+				rtlButton->setID("cm-robtop-logo-replacement");
+				rtlButton->setAnchorPoint(CCPoint(0,0));
+				rtlButton->m_scaleMultiplier = 1.15;
+				
+				CCMenu* rtlContainer = CCMenu::create();
+				rtlContainer->setPosition(10, 10);
+				rtlContainer->setContentSize(CCSize(80, 22.4));
+				rtlContainer->setAnchorPoint(CCPoint(0,0));
+				rtlContainer->setID("cm-robtop-logo-container");
+
+				rtlContainer->addChild(rtlButton);
+				this->addChild(rtlContainer);
+			}
+
+			robtopLogo->setContentSize(CCSize(0,0));
+			robtopLogo->setVisible(false);
+			socials->updateLayout();
 		}
 
 		auto account = getChildByID("profile-menu");
-		auto accbtn = account->getChildByID("profile-button");
-		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
-
 		float accBtnSetting = Mod::get()->getSettingValue<double>("whichSideProfileButton");
 		auto username = getChildByID("player-username");
-		if (account && !revertAccountPosition && username) {
-			if (accBtnSetting == 0 && robtopLogoHide) {
-				// Reset in order to attempt to fix icon account button
-				accbtn->setPosition(27.5,29);
-				accbtn->setContentSize(CCSize(55,58));
-				username->setPosition(93,12);
 
-				account->setPosition(77,30);
-			} else if (accBtnSetting == 1 && hideMoreGames) {
-				// Reset in order to attempt to fix icon account button
-				accbtn->setPosition(27.5,29);
-				accbtn->setContentSize(CCSize(55,58));
+		if(
+			account 
+			&& !revertAccountPosition
+			&& !(accBtnSetting == 1 && hideMoreGames == false)
+			&& !(accBtnSetting == 0 && robtopLogoHide == false)
+		) {
+			account->setContentSize(CCSize(56, 56));
+			account->setAnchorPoint(CCPoint(accBtnSetting,0));
+			account->setPosition(accBtnSetting == 1 ? winSize.width : 0, 0);
 
-				account->setPosition(587,30);
-				username->setPosition(479,12);
-			}
+			auto accountButton = account->getChildByID("profile-button");
+			accountButton->setPosition(accBtnSetting == 1 ? 55 : 0, 0);
+			accountButton->setAnchorPoint(CCPoint(accBtnSetting, 0));
+
+			username->setPosition(accBtnSetting == 1  ? (winSize.width - 60) : 60, 24);
+			username->setAnchorPoint(CCPoint(accBtnSetting, 0));
 		}
 
-		auto logo = socials->getChildByID("robtop-logo-button");
-		if (logo) {
-			logo->setVisible(!robtopLogoHide);
-		}
+		// auto logo = socials->getChildByID("robtop-logo-button");
+		// if (logo) {
+		// 	logo->setVisible(!robtopLogoHide);
+		// }
 
 		bool socialsHide = Mod::get()->getSettingValue<bool>("hideSocials");
 		if (auto sm2 = getChildByID("social-media-menu")) {
@@ -118,6 +142,10 @@ class $modify(LinkHandlerModification, MenuLayer) {
 
 	void redditOpen(CCObject* pSender) {
 		cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
+	}
+
+	void robtopOpen(CCObject* pSender) {
+		cocos2d::CCApplication::sharedApplication()->openURL("https://robtopgames.com");	
 	}
 };
 
