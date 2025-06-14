@@ -55,7 +55,7 @@ class $modify(LinkHandler, MenuLayer) {
 		// menuItem->setPosition(109,32);
 		menuItem->setRotation(-90);
 		menuItem->setContentSize(CCSize(25.5,25.5));
-		menuItem->setID("reddit-button");
+		menuItem->setID("reddit-button"_spr);
 		menuItem->setNormalImage(redditSprite);
 
 		redditSprite->setScale(0.975);
@@ -76,7 +76,7 @@ class $modify(LinkHandler, MenuLayer) {
 				rtlSprite->setScale(0.8);
 
 				CCMenuItemSpriteExtra* rtlButton = CCMenuItemSpriteExtra::create(rtlSprite, nullptr, this, menu_selector(LinkHandler::robtopOpen));
-				rtlButton->setID("cm-robtop-logo-replacement");
+				rtlButton->setID("cm-robtop-logo-replacement"_spr);
 				rtlButton->setAnchorPoint(CCPoint(0,0));
 				rtlButton->m_scaleMultiplier = 1.15;
 				
@@ -152,6 +152,8 @@ class $modify(LinkHandler, MenuLayer) {
 class $modify(CreatorLayer) {
 	bool init() {
 		if (!CreatorLayer::init()) return false;
+		auto winSize = CCDirector::get()->getWinSize();
+
 		const auto buttons = getChildByID("creator-buttons-menu");
 		const auto revert = Mod::get()->getSettingValue<bool>("revertCreatorPageChanges");
 		if (buttons && !revert && !incompatibleModsLoaded("CreatorLayer")) {
@@ -171,19 +173,21 @@ class $modify(CreatorLayer) {
 			const auto quests = buttons->getChildByID("quests-button");
 			const auto versus = buttons->getChildByID("versus-button");
 
-			buttons->setLayout(nullptr);
-
-			auto lowerButtons = CCMenu::create();
-			lowerButtons->setID("lower-buttons-menu");
-			lowerButtons->setContentSize(CCSize(496, 82));
-			lowerButtons->setPosition(223.5, 122);
-			buttons->addChild(lowerButtons);
-
-			auto upperButtons = CCMenu::create();
+			CCMenu* btnContainer = CCMenu::create();
+			btnContainer->setID("cm-buttons-container"_spr);
+			btnContainer->setPosition(winSize.width / 2, winSize.height / 2);
+			btnContainer->setContentSize(CCSize(winSize.width, winSize.height));
+			btnContainer->setLayout(SimpleAxisLayout::create(Axis::Column)->setGap(4));
+			
+			CCMenu* upperButtons = CCMenu::create();
 			upperButtons->setID("upper-buttons-menu");
 			upperButtons->setContentSize(CCSize(450, 83.6));
-			upperButtons->setPosition(224.5, 196);
-			buttons->addChild(upperButtons);
+			btnContainer->addChild(upperButtons);
+
+			CCMenu* lowerButtons = CCMenu::create();
+			lowerButtons->setID("lower-buttons-menu");
+			lowerButtons->setContentSize(CCSize(496, 82));
+			btnContainer->addChild(lowerButtons);
 
 			lowerButtons->setLayout(RowLayout::create()->setGap(7.5)->setAxisAlignment(AxisAlignment::Center));
 			upperButtons->setLayout(RowLayout::create()->setGap(0.5)->setAxisAlignment(AxisAlignment::Center));
@@ -196,7 +200,7 @@ class $modify(CreatorLayer) {
 				if (button) {
 					button->removeFromParent();
 
-					if (auto sprite = typeinfo_cast<CCSprite*>(button->getChildren()->objectAtIndex(0))) {
+					if (CCSprite* sprite = typeinfo_cast<CCSprite*>(button->getChildren()->objectAtIndex(0))) {
 						sprite->setScale(0.55);
 						sprite->setAnchorPoint(CCPoint(.8,.8));
 						button->setContentSize(CCSize(50,50));
@@ -213,11 +217,14 @@ class $modify(CreatorLayer) {
 				}
 			}
 
-			lowerButtons->updateLayout();
 			upperButtons->updateLayout();
+			lowerButtons->updateLayout();
 
 			if (versus) versus->setVisible(false);
 			if (map) map->setVisible(false);
+
+			addChild(btnContainer);
+			btnContainer->updateLayout();
 		}
 		return true;
 	}
