@@ -228,7 +228,7 @@ class $modify(CreatorLayer) {
 			
 			if (versus) versus->setVisible(false);
 			if (map) map->setVisible(false);
-			
+
 			lowerButtons->updateLayout();
 			upperButtons->updateLayout();
 
@@ -268,51 +268,54 @@ class $modify(LevelSearchLayer) {
 			const auto userSearchButton = searchMenu->getChildByID("search-user-button");
 
 			if (searchButton) searchButton->setVisible(false);
-			
 			if (userSearchButton) userSearchButton->setVisible(false);
 
-			const auto largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
-			const auto sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
-			const auto label1 = CCLabelBMFont::create("Search Levels", "bigFont.fnt");
-
+			CCMenu* searchButtonContainer = CCMenu::create();
+			searchButtonContainer->setID("search-button-container"_spr);
+			searchButtonContainer->setLayout(SimpleAxisLayout::create(Axis::Row)->setGap(33));
+			searchButtonContainer->setPosition(0, 96);
+			searchButtonContainer->setContentSize(CCSize(364, 36));
+			
+			CCSprite* largeSearchButtonCreate = CCSprite::create("search_long_button.png"_spr);
+			CCMenuItemSpriteExtra* sButton = CCMenuItemSpriteExtra::create(largeSearchButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearch));
+			CCLabelBMFont* label1 = CCLabelBMFont::create(std::format("Search {}", m_type == 0 ? "Levels" : "Lists").c_str(), "bigFont.fnt");
+			
+			largeSearchButtonCreate->setScale(1.2);
 			label1->setScale(0.4);
 			label1->setPosition(78, 14);
 			sButton->addChild(label1);
-
-			sButton->setPosition(-91, 96);
-			sButton->setID("cleanerMenu-search-level-button");
-			largeSearchButtonCreate->setScale(1.2);
-
-			searchMenu->addChild(sButton);
-
-			const auto largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
-			const auto sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
-			const auto label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
-
+			sButton->setID("search-level-button"_spr);
+			sButton->m_scaleMultiplier = 1.1;
+			searchButtonContainer->addChild(sButton);
+			
+			CCSprite* largeSearchUserButtonCreate = CCSprite::create("usersearch_long_button.png"_spr);
+			CCMenuItemSpriteExtra* sButton2 = CCMenuItemSpriteExtra::create(largeSearchUserButtonCreate, nullptr, this, menu_selector(LevelSearchLayer::onSearchUser));
+			CCLabelBMFont* label2 = CCLabelBMFont::create("Search Users", "bigFont.fnt");
+			
+			largeSearchUserButtonCreate->setScale(1.2);
 			label2->setScale(0.4);
 			label2->setPosition(83, 14);
-
 			sButton2->addChild(label2);
-
-			sButton2->setID("cleanerMenu-search-user-button");
-			sButton2->setPosition(88, 96);
-			largeSearchUserButtonCreate->setScale(1.2);
+			sButton2->setID("search-user-button");
+			sButton2->m_scaleMultiplier = 1.1;
+			searchButtonContainer->addChild(sButton2);
 			
-			searchMenu->addChild(sButton2);
-
 			const auto barbg = getChildByID("level-search-bar-bg");
 			barbg->setPosition((CCDirector::get()->getWinSize().width / 2.f) - (getChildByIDRecursive("clear-search-button")->getContentWidth() / 2.f) - 2.5f, 290);
 			barbg->setScale(1.475, 1);
-
-			if (const auto searchBar = typeinfo_cast<CCTextInputNode*>(getChildByID("search-bar"))) {
+			
+			if (CCTextInputNode* searchBar = typeinfo_cast<CCTextInputNode*>(getChildByID("search-bar"))) {
 				searchBar->setContentSize(CCSize(306, 50));
-				if (const auto textField = typeinfo_cast<CCTextFieldTTF*>(searchBar->getChildren()->objectAtIndex(0))){
+				if (CCTextFieldTTF* textField = typeinfo_cast<CCTextFieldTTF*>(searchBar->getChildren()->objectAtIndex(0))){
 					textField->setContentSize(CCSize(306, 26.75));
 				}
 			}
+
+			searchMenu->addChild(searchButtonContainer);
+			searchButtonContainer->updateLayout();
 		}
 		return true;
-	}	
+	}
 };
 
 class $modify(ProfilePage) {
