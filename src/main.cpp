@@ -177,7 +177,7 @@ class $modify(CreatorLayer) {
 			btnContainer->setID("cm-buttons-container"_spr);
 			btnContainer->setPosition(winSize.width / 2, winSize.height / 2);
 			btnContainer->setContentSize(CCSize(winSize.width, winSize.height));
-			btnContainer->setLayout(SimpleAxisLayout::create(Axis::Column)->setGap(4));
+			btnContainer->setLayout(SimpleAxisLayout::create(Axis::Column)->setGap(-13));
 			
 			CCMenu* upperButtons = CCMenu::create();
 			upperButtons->setID("upper-buttons-menu");
@@ -189,11 +189,20 @@ class $modify(CreatorLayer) {
 			lowerButtons->setContentSize(CCSize(496, 82));
 			btnContainer->addChild(lowerButtons);
 
-			lowerButtons->setLayout(RowLayout::create()->setGap(7.5)->setAxisAlignment(AxisAlignment::Center));
-			upperButtons->setLayout(RowLayout::create()->setGap(0.5)->setAxisAlignment(AxisAlignment::Center));
+			// lowerButtons->setLayout(RowLayout::create()->setGap(7.5)->setAxisAlignment(AxisAlignment::Center));
+			// upperButtons->setLayout(RowLayout::create()->setGap(0.5)->setAxisAlignment(AxisAlignment::Center));
+			SimpleAxisLayout* lowerLayout = SimpleAxisLayout::create(Axis::Row);
+			lowerLayout->setGap(7.5);
+			lowerLayout->ignoreInvisibleChildren(true);
+
+			SimpleAxisLayout* upperLayout = SimpleAxisLayout::create(Axis::Row);
+			upperLayout->ignoreInvisibleChildren(true);
+
+			lowerButtons->setLayout(lowerLayout);
+			upperButtons->setLayout(upperLayout);
 
 			// all small buttons have the same size properties, but different positions. This just saves lines
-			std::vector<CCNode*> smallButtons = {featured, paths, mappacks, daily, weekly, event, gauntlets, scores, quests};
+			std::vector<CCNode*> smallButtons = {featured, paths, map, mappacks, daily, weekly, versus, event, gauntlets, scores, quests};
 			std::vector<CCNode*> upperButtonsList = {create, saved, lists, search};
 
 			for (const auto &button : smallButtons) {
@@ -216,12 +225,13 @@ class $modify(CreatorLayer) {
 					upperButtons->addChild(button);
 				}
 			}
-
-			upperButtons->updateLayout();
-			lowerButtons->updateLayout();
-
+			
 			if (versus) versus->setVisible(false);
 			if (map) map->setVisible(false);
+			
+			lowerButtons->updateLayout();
+			upperButtons->updateLayout();
+
 
 			addChild(btnContainer);
 			btnContainer->updateLayout();

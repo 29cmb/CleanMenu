@@ -3,7 +3,7 @@
 	"gd": {
 		"win": "2.2074"
 	},
-	"version": "v2.2.1",
+	"version": "v2.2.2",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
@@ -77,16 +77,17 @@
 			"resources/*.png"
 		]
 	},
-	"repository": "https://github.com/29cmb/CleanMenu",
+	"links": {
+		"source": "https://github.com/29cmb/CleanMenu"	
+	},
 	"issues": {
 		"info": "Report issues to the github repository",
 		"url": "https://github.com/29cmb/CleanMenu/issues"
 	},
-	"dependencies": [
-		{
-			"id": "geode.node-ids",
+	"dependencies": {
+		"geode.node-ids": {
 			"version": "v1.20.1",
 			"importance": "required"
 		}
-	]
+	}
 }
