@@ -23,7 +23,7 @@ jobs:
 
       - name: Update LLVM Windows
         run: choco upgrade llvm
-        if: matrix.config.os == "windows-latest"
+        if: matrix.config.os == 'windows-latest'
 
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
