@@ -330,11 +330,8 @@ class $modify(ProfilePage) {
 			const auto commentButton = mainProfileMenu->getChildByID("comment-button");
 			const auto historyButton = mainProfileMenu->getChildByID("comment-history-button");
 
-			const auto cvoltonUsernameButton = mainProfileMenu->getChildByID("cvolton.betterinfo/username-button");
-			const auto geodeContributionsBadge = mainProfileMenu->getChildByID("geode-badge");
-
 			if (commentButton) {
-				const auto sprite = typeinfo_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
+				CCSprite* sprite = typeinfo_cast<CCSprite*>(commentButton->getChildren()->objectAtIndex(0));
 				if (sprite) {
 					sprite->setScale(0.8);
 					commentButton->setPosition(378, -232);
