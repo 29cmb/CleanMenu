@@ -1,7 +1,7 @@
 {
-	"geode": "4.5.0",
+	"geode": "5.0.0-alpha.1",
 	"gd": {
-		"win": "2.2074"
+		"win": "2.2081"
 	},
 	"version": "v2.2.2",
 	"id": "devcmb.cleanermenu",
@@ -86,7 +86,7 @@
 	},
 	"dependencies": {
 		"geode.node-ids": {
-			"version": "v1.20.1",
+			"version": "v1.21.0",
 			"importance": "required"
 		}
 	}

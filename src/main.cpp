@@ -9,29 +9,29 @@
 #include <Geode/loader/Loader.hpp>
 
 using namespace geode::prelude;
-namespace
+
+// TODO: In the next version, add these in a third row or something
+// Just not doing the change without saying why isn't a good idea
+std::map<std::string, std::vector<std::string>> incompatibilities = {
+	{"CreatorLayer", {"xanii.super_expert", "minemaker0430.gddp_integration", "alphalaneous.vanilla_pages"}}
+};
+
+bool incompatibleModsLoaded(std::string key)
 {
-	std::map<std::string, std::vector<std::string>> incompatibilities = {
-		{"CreatorLayer", {"xanii.super_expert", "minemaker0430.gddp_integration", "alphalaneous.vanilla_pages"}}
-	};
+	if (!incompatibilities.contains(key)) return false;
+	
+	bool isLoaded = false;
+	geode::Loader* loader = Loader::get();
 
-	bool incompatibleModsLoaded(const std::string& key)
+	for (const auto &mod : incompatibilities[key])
 	{
-		bool isLoaded = false;
-		if (incompatibilities.contains(key))
-		{
-			for (const auto &mod : incompatibilities[key])
-			{
-				if (Loader::get()->isModLoaded(mod))
-				{
-					isLoaded = true;
-					break;
-				}
-			}
-		}
-
-		return isLoaded;
+		if (!loader->isModLoaded(mod)) continue;
+		
+		isLoaded = true;
+		break;
 	}
+
+	return isLoaded;
 }
 
 class $modify(LinkHandler, MenuLayer) {
@@ -113,7 +113,7 @@ class $modify(LinkHandler, MenuLayer) {
 			accountButton->setPosition(accBtnSetting == 1 ? 55 : 0, 0);
 			accountButton->setAnchorPoint(CCPoint(accBtnSetting, 0));
 
-			username->setPosition(accBtnSetting == 1  ? (winSize.width - 60) : 60, 24);
+			username->setPosition(accBtnSetting == 1 ? (winSize.width - 60) : 60, 24);
 			username->setAnchorPoint(CCPoint(accBtnSetting, 0));
 		}
 
@@ -232,7 +232,6 @@ class $modify(CreatorLayer) {
 			lowerButtons->updateLayout();
 			upperButtons->updateLayout();
 
-
 			addChild(btnContainer);
 			btnContainer->updateLayout();
 		}
@@ -244,9 +243,9 @@ class $modify(LevelSearchLayer) {
 	bool init(int p1) {
 		if (!LevelSearchLayer::init(p1)) return false;
 
-		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
+		const auto changeRevert = Mod::get()->getSettingValue<bool>("revertSearchPageChanges");
 
-		if (!dontdochanges) {
+		if (!changeRevert) {
 			const auto filtersTitle = getChildByID("filters-title");
 			const auto quickSearchTitle = getChildByID("quick-search-title");
 
@@ -322,9 +321,10 @@ class $modify(ProfilePage) {
 	void loadPageFromUserInfo(GJUserScore* a2) {
 		ProfilePage::loadPageFromUserInfo(a2);
 
-		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertProfileChanges");
+		const auto changeRevert = Mod::get()->getSettingValue<bool>("revertProfileChanges");
 		const auto mainLayer = typeinfo_cast<CCLayer*>(getChildren()->objectAtIndex(0));
-		if (mainLayer && !dontdochanges)  {
+		
+		if (mainLayer && !changeRevert)  {
 			const auto mainProfileMenu = mainLayer->getChildByID("main-menu");
 
 			const auto commentButton = mainProfileMenu->getChildByID("comment-button");
@@ -344,10 +344,10 @@ class $modify(ProfilePage) {
 
 			if (const auto bottomMenu = mainLayer->getChildByID("bottom-menu")) {
 				bottomMenu->setLayout(
-				RowLayout::create()
-					->setGap(0.f)
-					->setGrowCrossAxis(true)
-					->setAxisAlignment(AxisAlignment::Center)
+					RowLayout::create()
+						->setGap(0.f)
+						->setGrowCrossAxis(true)
+						->setAxisAlignment(AxisAlignment::Center)
 				);
 				bottomMenu->updateLayout();
 			}
@@ -359,13 +359,14 @@ class $modify(GJGarageLayer) {
 	bool init() {
 		if (!GJGarageLayer::init()) return false;
 
-		const auto dontdochanges = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
+		const auto changeRevert = Mod::get()->getSettingValue<bool>("revertIconKitChanges");
 
-		if (!dontdochanges) {
+		if (!changeRevert) {
 			const auto shardsMenu = getChildByID("shards-menu");
-			const auto colorButton = shardsMenu->getChildByID("color-button");
-			if (colorButton) colorButton->setPosition(473.25, -12.5);
+			if (!shardsMenu) return true;
+			if (auto colorButton = shardsMenu->getChildByID("color-button")) colorButton->setPosition(473.25, -12.5);
 		}
+
 		return true;
 	}
 };
