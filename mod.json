@@ -3,11 +3,11 @@
 	"gd": {
 		"win": "2.2081"
 	},
-	"version": "v2.2.2",
+	"version": "v2.2.3",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
-	"description": "Improves the GD menus.",
+	"description": "Rearranges the GD menus.",
 	"settings": {
 		"hideRobtopLogo": {
 			"name": "Hide RobTop Logo",

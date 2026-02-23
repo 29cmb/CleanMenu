@@ -1,3 +1,6 @@
+# v2.2.3
+Add support for geode 5.0.0-beta.4
+
 # v2.2.0
 - Removed the extremely small changes on the garage layer
 - Improve compatibility with other mods on the creator layer
