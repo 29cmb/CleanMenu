@@ -132,6 +132,7 @@ class $modify(LinkHandler, MenuLayer) {
 					bottomMenu->setPositionY(58);
 				}
 			}
+		}
 	
 		if (!socialsHide && hideNewgroundsButton) {
 				auto bottomMenu = getChildByID("bottom-menu");
@@ -139,7 +140,6 @@ class $modify(LinkHandler, MenuLayer) {
 					bottomMenu->setPositionY(60);
 				}
 			}
-		}
 
 		if (auto moreGames = getChildByID("more-games-menu")) {
 			moreGames->setVisible(!hideMoreGames);
