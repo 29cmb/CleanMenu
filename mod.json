@@ -19,7 +19,7 @@
 			"name": "Hide Newgrounds Button",
 			"description": "Hide the newgrounds button on the main menu",
 			"type": "bool",
-			"default": false
+			"default": true
 		},
 		"hideSocials": {
 			"name": "Hide Social Icons",

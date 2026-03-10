@@ -148,6 +148,7 @@ class $modify(LinkHandler, MenuLayer) {
 	auto bottomMenu = getChildByID("bottom-menu");
 		if (auto newgroundsButton = bottomMenu->getChildByID("newgrounds-button")) {
 			newgroundsButton->setVisible(!hideNewgroundsButton);
+				bottomMenu->updateLayout();
 		}
 
 		return true;
