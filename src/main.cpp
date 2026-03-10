@@ -63,6 +63,7 @@ class $modify(LinkHandler, MenuLayer) {
 		socials->updateLayout();
 
 		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
+		bool hideNewgroundsButton = Mod::get()->getSettingValue<bool>("hideNewgroundsButton");
 		bool revertAccountPosition = Mod::get()->getSettingValue<bool>("revertProfileButton");
 
 		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
@@ -133,8 +134,21 @@ class $modify(LinkHandler, MenuLayer) {
 			}
 		}
 	
+		if (!socialsHide && hideNewgroundsButton) {
+				auto bottomMenu = getChildByID("bottom-menu");
+				if (bottomMenu) {
+					bottomMenu->setPositionY(60);
+				}
+			}
+
 		if (auto moreGames = getChildByID("more-games-menu")) {
 			moreGames->setVisible(!hideMoreGames);
+		}
+		
+	auto bottomMenu = getChildByID("bottom-menu");
+		if (auto newgroundsButton = bottomMenu->getChildByID("newgrounds-button")) {
+			newgroundsButton->setVisible(!hideNewgroundsButton);
+				bottomMenu->updateLayout();
 		}
 
 		return true;

@@ -1,3 +1,6 @@
+# v2.3.0
+- Added setting to hide the newgrounds button
+
 # v2.2.3
 Add support for geode 5.0.0-beta.4
 

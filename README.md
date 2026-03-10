@@ -6,7 +6,7 @@ The main purpose of the mod is to re-organize certain things on the different me
 
 ### Main Menu
 ![img.png](docs/mainmenu.png)
-The main menu has some tweaks that make it look a bit cleaner, such as by positioning the social icons below the set of large buttons. Along with this, you can optionally hide the robtop logo and the more games button. Finally, the profile button has been moved to the bottom right corner with the name along the bottom.
+The main menu has some tweaks that make it look a bit cleaner, such as by positioning the social icons below the set of large buttons. Along with this, you can optionally hide the robtop logo, the more games button, and the newgrounds button. Finally, the profile button has been moved to the bottom right corner with the name along the bottom.
 
 ### Creator Menu
 ![img.png](docs/CreatorLayer.png)
