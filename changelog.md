@@ -1,3 +1,8 @@
+# v2.4.0
+- Added support for geode 6.0.0
+- Made the news button go along with the social icons if it would be blocked (assuming the setting to disable it is not on)
+- Internal improvements
+
 # v2.3.0
 - Added setting to hide the newgrounds button
 
