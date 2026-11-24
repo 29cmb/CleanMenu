@@ -19,18 +19,14 @@ jobs:
     runs-on: ${{ matrix.config.os }}
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Update LLVM Windows
-        run: choco upgrade llvm
-        if: matrix.config.os == 'windows-latest'
+      - uses: actions/checkout@v7
 
       - name: Build the mod
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
           target: ${{ matrix.config.target }}
-      
+
   package:
     name: Package builds
     runs-on: ubuntu-latest
@@ -40,7 +36,7 @@ jobs:
       - uses: geode-sdk/build-geode-mod/combine@main
         id: build
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Build Output
           path: ${{ steps.build.outputs.build-output }}
