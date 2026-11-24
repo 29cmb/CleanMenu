@@ -34,7 +34,7 @@ bool incompatibleModsLoaded(std::string key)
 	return isLoaded;
 }
 
-class $modify(LinkHandler, MenuLayer) {
+class $modify(MenuHandler, MenuLayer) {
 	bool init() {
 		if (!MenuLayer::init()) return false;
 		auto winSize = CCDirector::get()->getWinSize();
@@ -47,24 +47,19 @@ class $modify(LinkHandler, MenuLayer) {
 		socials->setPosition((winSize.width / 2.0), 19);
 		socials->setLayout(SimpleAxisLayout::create(Axis::Row));
 
-		//reddit button!!!!!
-
-		CCSprite* redditSprite = CCSprite::create("reddit-button.png"_spr);
-		CCMenuItemSpriteExtra* menuItem = CCMenuItemSpriteExtra::create(redditSprite, nullptr, this, menu_selector(LinkHandler::redditOpen));
-	
-		// menuItem->setPosition(109,32);
-		menuItem->setRotation(-90);
-		menuItem->setContentSize(CCSize(25.5,25.5));
-		menuItem->setID("reddit-button"_spr);
-		menuItem->setNormalImage(redditSprite);
-
-		redditSprite->setScale(0.975);
-		socials->addChild(menuItem);
-		socials->updateLayout();
-
-		bool hideMoreGames = Mod::get()->getSettingValue<bool>("hideMoreGames");
-		bool hideNewgroundsButton = Mod::get()->getSettingValue<bool>("hideNewgroundsButton");
+		bool hideNews = Mod::get()->getSettingValue<bool>("hideNewsButton");
+		float accBtnSetting = Mod::get()->getSettingValue<double>("whichSideProfileButton");
 		bool revertAccountPosition = Mod::get()->getSettingValue<bool>("revertProfileButton");
+
+		createSocialButton(socials, CCSprite::createWithSpriteFrameName("gj_rdIcon_001.png"), "reddit-button"_spr, menu_selector(MenuHandler::redditOpen));
+		if(!hideNews) {
+			if(accBtnSetting == 1 && !revertAccountPosition) {
+				createSocialButton(socials, CCSprite::create("news-button.png"_spr), "news-button"_spr, menu_selector(MenuHandler::redditOpen));
+				hideNewsButton(socials);
+			}
+		} else hideNewsButton(socials);
+
+		bool hideNewgroundsButton = Mod::get()->getSettingValue<bool>("hideNewgroundsButton");
 
 		bool robtopLogoHide = Mod::get()->getSettingValue<bool>("hideRobtopLogo");
 		auto robtopLogo = socials->getChildByID("robtop-logo-button");
@@ -76,7 +71,7 @@ class $modify(LinkHandler, MenuLayer) {
 				rtlSprite->setContentSize(CCSize(100, 28));
 				rtlSprite->setScale(0.8);
 
-				CCMenuItemSpriteExtra* rtlButton = CCMenuItemSpriteExtra::create(rtlSprite, nullptr, this, menu_selector(LinkHandler::robtopOpen));
+				CCMenuItemSpriteExtra* rtlButton = CCMenuItemSpriteExtra::create(rtlSprite, nullptr, this, menu_selector(MenuLayer::onRobTop));
 				rtlButton->setID("cm-robtop-logo-replacement"_spr);
 				rtlButton->setAnchorPoint(CCPoint(0,0));
 				rtlButton->m_scaleMultiplier = 1.15;
@@ -97,13 +92,11 @@ class $modify(LinkHandler, MenuLayer) {
 		}
 
 		auto account = getChildByID("profile-menu");
-		float accBtnSetting = Mod::get()->getSettingValue<double>("whichSideProfileButton");
 		auto username = getChildByID("player-username");
 
 		if(
 			account 
 			&& !revertAccountPosition
-			&& !(accBtnSetting == 1 && hideMoreGames == false)
 			&& !(accBtnSetting == 0 && robtopLogoHide == false)
 		) {
 			account->setContentSize(CCSize(56, 56));
@@ -135,17 +128,13 @@ class $modify(LinkHandler, MenuLayer) {
 		}
 	
 		if (!socialsHide && hideNewgroundsButton) {
-				auto bottomMenu = getChildByID("bottom-menu");
-				if (bottomMenu) {
-					bottomMenu->setPositionY(60);
-				}
+			auto bottomMenu = getChildByID("bottom-menu");
+			if (bottomMenu) {
+				bottomMenu->setPositionY(60);
 			}
-
-		if (auto moreGames = getChildByID("more-games-menu")) {
-			moreGames->setVisible(!hideMoreGames);
 		}
 		
-	auto bottomMenu = getChildByID("bottom-menu");
+		auto bottomMenu = getChildByID("bottom-menu");
 		if (auto newgroundsButton = bottomMenu->getChildByID("newgrounds-button")) {
 			newgroundsButton->setVisible(!hideNewgroundsButton);
 				bottomMenu->updateLayout();
@@ -154,12 +143,36 @@ class $modify(LinkHandler, MenuLayer) {
 		return true;
 	}
 
-	void redditOpen(CCObject* pSender) {
-		cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
+	void hideNewsButton(CCNode* socials) {
+		auto newsMenu = getChildByID("news-menu");
+		if(!newsMenu) return;
+
+		auto newsButton = newsMenu->getChildByID("news-button");
+		if(!newsButton) return;
+
+		newsButton->setVisible(false);
 	}
 
-	void robtopOpen(CCObject* pSender) {
-		cocos2d::CCApplication::sharedApplication()->openURL("https://robtopgames.com");	
+	void createSocialButton(
+		CCNode* socials, 
+		CCSprite* sprite,
+		const char* id,
+		cocos2d::SEL_MenuHandler handler
+	) {
+		sprite->setScale(0.8);
+		sprite->setContentSize(CCSize(32, 30.5));
+
+		CCMenuItemSpriteExtra* menuItem = CCMenuItemSpriteExtra::create(sprite, nullptr, this, handler);
+		menuItem->setID(id);
+		menuItem->setNormalImage(sprite);
+		menuItem->setContentSize(CCSize(25.6, 24.4));
+
+		socials->addChild(menuItem);
+		socials->updateLayout();
+	}
+
+	void redditOpen(CCObject* pSender) {
+		cocos2d::CCApplication::sharedApplication()->openURL("https://www.reddit.com/r/geometrydash/");
 	}
 };
 
@@ -216,10 +229,7 @@ class $modify(CreatorLayer) {
 			upperButtons->setLayout(upperLayout);
 
 			// all small buttons have the same size properties, but different positions. This just saves lines
-			std::vector<CCNode*> smallButtons = {featured, paths, map, mappacks, daily, weekly, versus, event, gauntlets, scores, quests};
-			std::vector<CCNode*> upperButtonsList = {create, saved, lists, search};
-
-			for (const auto &button : smallButtons) {
+			for (const auto &button : {featured, paths, map, mappacks, daily, weekly, versus, event, gauntlets, scores, quests}) {
 				if (button) {
 					button->removeFromParent();
 
@@ -233,7 +243,7 @@ class $modify(CreatorLayer) {
 				}
 			}
 
-			for (const auto &button : upperButtonsList) {
+			for (const auto &button : {create, saved, lists, search}) {
 				if (button) {
 					button->removeFromParent();
 					upperButtons->addChild(button);

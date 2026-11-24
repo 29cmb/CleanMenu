@@ -1,9 +1,9 @@
 {
-	"geode": "5.3.0",
+	"geode": "6.0.0",
 	"gd": {
-		"win": "2.2081"
+		"win": "2.2091"
 	},
-	"version": "v2.3.0",
+	"version": "v2.4.0",
 	"id": "devcmb.cleanermenu",
 	"name": "Cleaner Menu",
 	"developer": "DevCmb",
@@ -27,11 +27,11 @@
 			"type": "bool",
 			"default": false
 		},
-		"hideMoreGames": {
-			"name": "Hide More Games",
-			"description": "Hide the more games button on the main menu | Disabling this will revert the position of the profile button back",
+		"hideNewsButton": {
+			"name": "Hide News Button",
+			"description": "Hide the news button on the main menu | If this is disabled and the profile button would get in the way, it will appear in the social bar at the bottom of the screen.",
 			"type": "bool",
-			"default": true
+			"default": false
 		},
 		"revertProfileButton": {
 			"name": "Revert Profile Button",
@@ -92,7 +92,7 @@
 	},
 	"dependencies": {
 		"geode.node-ids": {
-			"version": "v1.22.0",
+			"version": "v1.24.0-beta.1",
 			"required": true
 		}
 	}
