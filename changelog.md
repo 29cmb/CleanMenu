@@ -1,3 +1,6 @@
+# v2.4.1
+- Fix news button opening reddit
+
 # v2.4.0
 - Added support for geode 6.0.0
 - Made the news button go along with the social icons if it would be blocked (assuming the setting to disable it is not on)
