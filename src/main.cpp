@@ -54,7 +54,7 @@ class $modify(MenuHandler, MenuLayer) {
 		createSocialButton(socials, CCSprite::createWithSpriteFrameName("gj_rdIcon_001.png"), "reddit-button"_spr, menu_selector(MenuHandler::redditOpen));
 		if(!hideNews) {
 			if(accBtnSetting == 1 && !revertAccountPosition) {
-				createSocialButton(socials, CCSprite::create("news-button.png"_spr), "news-button"_spr, menu_selector(MenuHandler::redditOpen));
+				createSocialButton(socials, CCSprite::create("news-button.png"_spr), "news-button"_spr, menu_selector(MenuLayer::onNews));
 				hideNewsButton(socials);
 			}
 		} else hideNewsButton(socials);
